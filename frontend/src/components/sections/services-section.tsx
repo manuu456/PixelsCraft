@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { Section, SectionHeader, GlassCard } from '@/components/ui'
 import { Globe, Smartphone, Zap, Bot, Palette, Shield, ArrowRight, Check } from 'lucide-react'
 import Link from 'next/link'
@@ -57,16 +56,6 @@ const services = [
   },
 ]
 
-const stagger = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
-}
-
 export function ServicesSection() {
   return (
     <Section id="services" data-testid="services-section">
@@ -76,79 +65,62 @@ export function ServicesSection() {
         subtitle="From concept to deployment, we build products that users love and businesses rely on."
       />
 
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-[1100px] w-full">
         {services.map((service) => (
-          <motion.div key={service.title} variants={fadeUp}>
-            <Link href={service.href} data-testid={`service-card-${service.title.toLowerCase().replace(/\s+/g, '-')}`}>
-              <GlassCard padding="none" className="h-full flex flex-col group cursor-pointer overflow-hidden">
-                {/* Image */}
-                <div className="relative h-36 overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-1)] via-[var(--surface-1)]/50 to-transparent" />
-                  <div className="absolute bottom-3 left-4 w-11 h-11 flex items-center justify-center bg-[var(--gold)] text-[var(--void)]">
-                    <service.icon className="w-5 h-5" />
-                  </div>
+          <Link key={service.title} href={service.href} data-testid={`service-card-${service.title.toLowerCase().replace(/\s+/g, '-')}`}>
+            <GlassCard padding="none" className="h-[380px] flex flex-col group cursor-pointer overflow-hidden rounded-2xl">
+              {/* Image */}
+              <div className="relative h-[140px] overflow-hidden flex-shrink-0">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,10,0.95)] via-[rgba(10,10,10,0.4)] to-transparent" />
+                <div className="absolute bottom-3 left-4 w-10 h-10 flex items-center justify-center bg-gradient-to-br from-[var(--gold-light)] to-[var(--gold)] text-[var(--void)] rounded-xl shadow-[0_4px_15px_rgba(212,175,55,0.3)]">
+                  <service.icon className="w-5 h-5" />
                 </div>
+              </div>
 
-                {/* Content */}
-                <div className="p-6 flex flex-col gap-3 flex-1">
-                  <h3 className="font-heading text-lg font-semibold text-[var(--text-primary)] group-hover:text-[var(--gold)] transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                    {service.description}
-                  </p>
-                  <div className="flex-1">
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-1">
-                      {service.features.map((f) => (
-                        <span key={f} className="inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
-                          <Check className="w-3 h-3 text-[var(--gold)]" />
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-[var(--gold)] text-sm font-medium pt-3 border-t border-[var(--border-subtle)]">
-                    Learn more
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
+              {/* Content */}
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className="font-heading text-[1.05rem] font-semibold text-[var(--text-primary)] group-hover:text-[var(--gold)] transition-colors mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed mb-3 line-clamp-2">
+                  {service.description}
+                </p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-auto mb-3">
+                  {service.features.map((f) => (
+                    <span key={f} className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+                      <Check className="w-3 h-3 text-[var(--gold)]" />
+                      {f}
+                    </span>
+                  ))}
                 </div>
-              </GlassCard>
-            </Link>
-          </motion.div>
+                <div className="flex items-center gap-2 text-[var(--gold)] text-[13px] font-medium pt-3 border-t border-[var(--glass-border)]">
+                  Learn more
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </GlassCard>
+          </Link>
         ))}
-      </motion.div>
+      </div>
 
       {/* Tech Stack */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.3 }}
-        className="mt-20 max-w-4xl w-full"
-        data-testid="tech-stack-banner"
-      >
-        <div className="card-surface p-8 text-center">
+      <div className="mt-20 max-w-3xl w-full" data-testid="tech-stack-banner">
+        <div className="glass-card rounded-2xl p-8 text-center">
           <p className="section-overline mb-4">Technologies We Use</p>
-          <div className="flex flex-wrap justify-center gap-8 text-[var(--text-muted)]">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-[var(--text-muted)]">
             {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'PostgreSQL', 'AWS', 'OpenAI'].map((tech) => (
               <span key={tech} className="text-sm font-medium font-mono">{tech}</span>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </Section>
   )
 }

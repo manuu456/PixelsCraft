@@ -26,9 +26,9 @@ interface ButtonAsLink extends ButtonBaseProps {
 type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'btn-gold',
-  outline: 'btn-outline',
-  ghost: 'bg-transparent hover:bg-white/5 text-[var(--text-secondary)] transition-colors',
+  primary: 'btn-gold rounded-xl',
+  outline: 'btn-outline rounded-xl',
+  ghost: 'bg-transparent hover:bg-white/5 text-[var(--text-secondary)] rounded-xl transition-colors',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {

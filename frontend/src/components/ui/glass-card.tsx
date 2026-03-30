@@ -1,10 +1,9 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { motion, HTMLMotionProps } from 'framer-motion'
 import { forwardRef } from 'react'
 
-interface GlassCardProps extends HTMLMotionProps<'div'> {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   hover?: boolean
   padding?: 'none' | 'sm' | 'md' | 'lg'
   'data-testid'?: string
@@ -18,25 +17,19 @@ const paddingMap = {
 }
 
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, hover = true, padding = 'md', children, 'data-testid': testId, ...props }, ref) => {
+  ({ className, hover = true, padding = 'md', children, ...props }, ref) => {
     return (
-      <motion.div
+      <div
         ref={ref}
-        data-testid={testId}
         className={cn(
-          'card-surface',
+          'glass-card rounded-2xl',
           paddingMap[padding],
-          hover && 'hover:-translate-y-1',
           className
         )}
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         {...props}
       >
         {children}
-      </motion.div>
+      </div>
     )
   }
 )

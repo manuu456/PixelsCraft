@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { motion } from 'framer-motion'
 import { ReactNode } from 'react'
 
 interface SectionProps {
@@ -14,7 +13,7 @@ interface SectionProps {
 
 export function Section({ id, className, children, centered = true, 'data-testid': testId }: SectionProps) {
   return (
-    <motion.section
+    <section
       id={id}
       data-testid={testId}
       className={cn(
@@ -22,13 +21,9 @@ export function Section({ id, className, children, centered = true, 'data-testid
         centered && 'flex flex-col items-center',
         className
       )}
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
     >
       {children}
-    </motion.section>
+    </section>
   )
 }
 
