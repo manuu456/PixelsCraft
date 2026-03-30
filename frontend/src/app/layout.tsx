@@ -5,24 +5,12 @@ import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'PixelCraft — Websites, Apps & AI Agents',
-  description:
-    'PixelCraft is a boutique digital studio crafting websites, mobile apps, automation solutions, and AI agents. Based in Tirupati, India.',
-  keywords: [
-    'web development',
-    'mobile apps',
-    'AI agents',
-    'automation',
-    'UI/UX design',
-    'digital agency',
-    'Tirupati',
-    'India',
-  ],
+  description: 'PixelCraft is a digital studio crafting websites, mobile apps, automation solutions, and AI agents. Based in Tirupati, India.',
+  keywords: ['web development', 'mobile apps', 'AI agents', 'automation', 'digital agency', 'Tirupati'],
   authors: [{ name: 'PixelCraft Team' }],
   openGraph: {
     title: 'PixelCraft — Websites, Apps & AI Agents',
-    description:
-      'Crafting websites, mobile apps, automation solutions, and AI agents.',
-    url: 'https://pixelcraft.studio',
+    description: 'Crafting websites, mobile apps, automation solutions, and AI agents.',
     siteName: 'PixelCraft',
     locale: 'en_US',
     type: 'website',
@@ -30,14 +18,10 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-body antialiased">
+      <body className="antialiased">
         <Navbar />
         <main>{children}</main>
         <Footer />

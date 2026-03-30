@@ -26,21 +26,21 @@ interface ButtonAsLink extends ButtonBaseProps {
 type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'btn-gold rounded-xl',
-  outline: 'btn-outline rounded-xl',
-  ghost: 'bg-transparent hover:bg-white/5 text-[var(--text-secondary)] rounded-xl transition-colors',
+  primary: 'bg-gold text-black font-semibold hover:bg-gold-light transition-colors',
+  outline: 'border border-[rgba(255,255,255,0.15)] text-[#ededed] font-medium hover:border-gold hover:text-gold transition-colors',
+  ghost: 'text-[#888] hover:text-[#ededed] transition-colors',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'px-5 py-2 text-xs',
-  md: 'px-8 py-3.5 text-sm',
-  lg: 'px-10 py-4 text-sm',
+  sm: 'px-5 py-2 text-xs rounded-lg',
+  md: 'px-7 py-3 text-sm rounded-lg',
+  lg: 'px-9 py-3.5 text-sm rounded-lg',
 }
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (props, ref) => {
     const { className, variant = 'primary', size = 'md', children, 'data-testid': testId } = props
-    const classes = cn(variantClasses[variant], sizeClasses[size], className)
+    const classes = cn('inline-flex items-center justify-center gap-2', variantClasses[variant], sizeClasses[size], className)
 
     if ('href' in props && props.href) {
       const { href, target, rel } = props
@@ -53,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
     const { onClick, disabled, type } = props as ButtonAsButton
     return (
-      <button ref={ref as React.Ref<HTMLButtonElement>} className={classes} onClick={onClick} disabled={disabled} type={type} data-testid={testId}>
+      <button ref={ref as React.Ref<HTMLButtonElement>} className={cn(classes, disabled && 'opacity-50 cursor-not-allowed')} onClick={onClick} disabled={disabled} type={type} data-testid={testId}>
         {children}
       </button>
     )
