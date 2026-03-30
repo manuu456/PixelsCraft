@@ -1,0 +1,158 @@
+{
+  "theme_details": {
+    "domain": "Creative Agency / Tech",
+    "theme": "Dark",
+    "archetype": "5 (Jewel & Luxury)",
+    "rationale": "For PixelCraft, a high-end tech and creative agency building websites, apps, and AI agents. A dark theme with gold typography projects opulence, sophistication, and a premium 'Godly' feel. It stands out from generic SaaS templates by utilizing intentional color storytelling, deep shadows, and cinematic textures."
+  },
+  "typography": {
+    "font_families": {
+      "heading": "Cabinet Grotesk",
+      "body": "Satoshi",
+      "mono": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.1]",
+      "h2": "text-4xl sm:text-5xl font-bold tracking-tight leading-tight",
+      "h3": "text-2xl sm:text-3xl font-semibold tracking-tight",
+      "h4": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-lg leading-relaxed",
+      "small": "text-sm tracking-wide text-zinc-400",
+      "overline": "text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]"
+    },
+    "rules": [
+      "Headings must use tight letter spacing (tracking-tighter) for a premium editorial look.",
+      "Never use Inter or generic sans for headings.",
+      "Use overlines for section subheaders (e.g., 'OUR EXPERTISE')."
+    ]
+  },
+  "colors": {
+    "backgrounds": {
+      "base": "#050505",
+      "surface_1": "#0A0A0A",
+      "surface_2": "#111111",
+      "surface_glass": "rgba(10, 10, 10, 0.6)"
+    },
+    "text": {
+      "primary": "#FAFAFA",
+      "secondary": "#A1A1AA",
+      "gold": "#D4AF37",
+      "gold_light": "#FFD700"
+    },
+    "accents": {
+      "gold_primary": "#D4AF37",
+      "gold_hover": "#F3E5AB",
+      "gold_muted": "#BCA876"
+    },
+    "borders": {
+      "subtle": "rgba(255, 255, 255, 0.1)",
+      "gold": "rgba(212, 175, 55, 0.2)",
+      "gold_active": "rgba(212, 175, 55, 0.6)"
+    },
+    "rules": [
+      "Never use pure black #000000; use #050505 to give it depth.",
+      "Use gold strictly as an accent or for critical CTAs and high-hierarchy text elements."
+    ]
+  },
+  "layout_spacing": {
+    "philosophy": "Generous Spacing & The Tetris Grid",
+    "padding": {
+      "section_y": "py-24 md:py-32",
+      "container_x": "px-6 md:px-12 lg:px-24",
+      "card_inner": "p-8 md:p-12"
+    },
+    "grids": {
+      "bento_services": "grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8",
+      "bento_portfolio": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    }
+  },
+  "surfaces_and_effects": {
+    "cards": {
+      "style": "Flat background (#0A0A0A), 1px subtle gold border (border-[#D4AF37]/20), no heavy shadow.",
+      "hover": "Hover state transitions border to border-[#D4AF37]/60 with a subtle glow (shadow-[0_0_15px_rgba(212,175,55,0.15)])"
+    },
+    "glassmorphism": {
+      "usage": "Sticky headers and modal overlays.",
+      "classes": "backdrop-blur-xl bg-[#050505]/70 border-b border-white/10"
+    },
+    "hero_overlay": "bg-gradient-to-b from-[#050505]/40 via-[#050505]/60 to-[#050505] - DO NOT make it solid black."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#D4AF37] text-[#050505] font-semibold px-8 py-4 rounded-none hover:bg-[#FFD700] transition-colors duration-300",
+      "secondary": "bg-transparent text-[#FAFAFA] border border-[#D4AF37]/30 px-8 py-4 rounded-none hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-300"
+    },
+    "forms": {
+      "inputs": "bg-[#0A0A0A] border-white/10 text-white rounded-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all",
+      "labels": "text-sm text-zinc-400 mb-2 block"
+    },
+    "marquee": "Use react-fast-marquee with monochromatic/gold-tinted brand icons for technologies (React, Node, Python, AWS, etc.).",
+    "navigation": "Fixed at top, z-50, crystal glassmorphism, right-aligned nav links with hover text-[#D4AF37]. Primary CTA button on the far right."
+  },
+  "motion": {
+    "scroll": "MANDATORY: Use lenis for smooth scrolling.",
+    "reveal": "Use framer-motion. Initial: opacity-0, translate-y-8. WhileInView: opacity-100, translate-y-0. Stagger children for lists/grids.",
+    "hover": "Scale images within overflow-hidden containers (scale-105 duration-700 ease-out) on card hover."
+  },
+  "media": {
+    "hero_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/c9e6853e-20f6-47e3-abf0-1943be61c72a/images/20a7ee0b05902ebf421af5599b786d28358a31da42009f6ce06ef01c413a7703.png",
+      "description": "Abstract luxury 3D geometric shapes in metallic black and glowing gold. Use as hero background."
+    },
+    "services": [
+      {
+        "name": "Web Development",
+        "url": "https://images.unsplash.com/photo-1761437855598-a84c2849dc6a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhYnN0cmFjdCUyMGdvbGQlMjBibGFjayUyMHRleHR1cmV8ZW58MHx8fHwxNzc0ODY1MDg5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract golden spiral for Web Dev service."
+      },
+      {
+        "name": "Mobile Apps",
+        "url": "https://static.prod-images.emergentagent.com/jobs/c9e6853e-20f6-47e3-abf0-1943be61c72a/images/647d0072233047034d70f3bf6c89df1345c8fb2c74ae44e7ed7b180659f1b1fd.png",
+        "description": "App wireframe glowing in gold for Mobile Apps service."
+      },
+      {
+        "name": "AI Agents",
+        "url": "https://static.prod-images.emergentagent.com/jobs/c9e6853e-20f6-47e3-abf0-1943be61c72a/images/511903eb8048f67c50c1d6e14de0811b0484e55d4f14465c4aa8e0ffd44efe7a.png",
+        "description": "Futuristic AI agent conceptual visualization."
+      },
+      {
+        "name": "Automation",
+        "url": "https://images.pexels.com/photos/30232780/pexels-photo-30232780.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Dynamic abstract fluid art in gold/black for Automation."
+      },
+      {
+        "name": "UI/UX",
+        "url": "https://static.prod-images.emergentagent.com/jobs/c9e6853e-20f6-47e3-abf0-1943be61c72a/images/16ea469b3c15bafc251c7eb9e11e3b71991858b16d788d1ab99f170402b6ad36.png",
+        "description": "Slate texture with delicate gold flakes for UI/UX."
+      },
+      {
+        "name": "Security",
+        "url": "https://images.unsplash.com/photo-1761437855598-011cf89b2ad4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBhYnN0cmFjdCUyMGdvbGQlMjBibGFjayUyMHRleHR1cmV8ZW58MHx8fHwxNzc0ODY1MDg5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract metallic curves for Security."
+      }
+    ],
+    "about": {
+      "office": "https://images.unsplash.com/photo-1771270759486-1f7703945072?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxjcmVhdGl2ZSUyMHRlYW0lMjBtZWV0aW5nJTIwb2ZmaWNlJTIwZGFya3xlbnwwfHx8fDE3NzQ4NjUwNjh8MA&ixlib=rb-4.1.0&q=85",
+      "worker": "https://images.unsplash.com/photo-1758520144667-3041caeff3c1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHRlYW0lMjBtZWV0aW5nJTIwb2ZmaWNlJTIwZGFya3xlbnwwfHx8fDE3NzQ4NjUwNjh8MA&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "pages_and_structure": {
+    "company_details": {
+      "name": "PixelCraft",
+      "phone": "+919391279070",
+      "address": "Tirupati"
+    },
+    "routing": "Since it's a marketing site, a single long-scrolling page layout with anchor links is highly effective, but separate routes (Home, About Us, Services, Portfolio, Pricing, Contact Us) can also be built based on router setup.",
+    "sections": {
+      "Hero": "Massive typography, CTA button to Services/Contact, using hero_background image.",
+      "Services": "Bento grid (Mode A) showcasing Web Dev, Mobile Apps, AI Agents, Automation, UI/UX, Security. Use media URLs for card backgrounds with dark overlays.",
+      "Portfolio": "3-column grid showing off high-end work. Hover reveals case study details.",
+      "About_Team": "Split layout (text left, image right) telling the PixelCraft story. Use office/worker media.",
+      "Testimonials": "Minimalist typographic quotes, high contrast, muted gold author names.",
+      "Pricing": "3-tier pricing cards. Center card 'Pro' highlighted with gold borders and 'Tracing Beam' effect if possible.",
+      "Contact": "Shadcn-based form with dark/gold styling. Info column containing Phone/Address.",
+      "Footer": "Massive footer (py-32). Huge 'PixelCraft' text at the bottom. Grid of links, all functional."
+    }
+  },
+  "testing_attributes": "All interactive elements MUST include data-testid. Examples: data-testid='nav-services-link', data-testid='hero-cta-button', data-testid='contact-submit-button'."
+}
