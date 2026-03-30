@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -11,92 +12,86 @@ const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/pricing', label: 'Pricing' },
   { href: '/contact', label: 'Contact' },
 ]
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
   }, [isMobileMenuOpen])
 
   return (
     <>
-      {/* Curved Navbar */}
       <nav
+        data-testid="main-navbar"
         className={cn(
-          'fixed top-4 left-4 right-4 z-50 h-[64px] px-6 md:px-10',
+          'fixed top-0 left-0 right-0 z-50 h-[72px] px-6 md:px-12 lg:px-24',
           'flex items-center justify-between',
-          'rounded-full',
-          'glass-nav transition-all duration-400',
-          isScrolled && 'glass-nav-scrolled top-2'
+          'glass-header transition-all duration-500',
+          isScrolled && 'glass-header-scrolled'
         )}
       >
-        {/* Logo */}
         <Link
           href="/"
-          className="font-serif font-bold text-2xl text-bloom flex items-center gap-2.5 tracking-tight hover:opacity-80 transition-opacity"
+          data-testid="nav-logo"
+          className="font-heading font-bold text-xl tracking-tight text-[var(--text-primary)] hover:text-[var(--gold)] transition-colors flex items-center gap-2"
         >
-          PixelCraft
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-[var(--gold)] animate-pulse shadow-[0_0_10px_rgba(245,197,24,0.5)]" />
+          <span className="w-2 h-2 bg-[var(--gold)] inline-block" />
+          PIXELCRAFT
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex gap-8">
+        <ul className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-[0.85rem] font-medium uppercase tracking-[0.08em] text-[var(--text-mid)] relative transition-colors hover:text-bloom group"
+                data-testid={`nav-${link.label.toLowerCase()}-link`}
+                className={cn(
+                  'text-sm font-medium tracking-wide transition-colors relative',
+                  pathname === link.href
+                    ? 'text-[var(--gold)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--gold)]'
+                )}
               >
                 {link.label}
-                <span className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-bloom scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full" />
+                {pathname === link.href && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--gold)]" />
+                )}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* CTA Button - Desktop */}
         <Link
           href="/contact"
-          className="hidden lg:flex btn-primary py-2.5 px-6 text-sm"
+          data-testid="nav-cta-button"
+          className="hidden lg:flex btn-gold py-2.5 px-7 text-xs"
         >
-          Start Project
+          Start a Project
         </Link>
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 rounded-full hover:bg-white/10 transition-colors"
+          className="md:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
           aria-label="Toggle menu"
+          data-testid="mobile-menu-toggle"
         >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6 text-bloom" />
-          ) : (
-            <Menu className="w-6 h-6 text-[var(--text-mid)]" />
-          )}
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -104,49 +99,49 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 md:hidden"
+            data-testid="mobile-menu-overlay"
           >
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            <div
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-
-            {/* Menu Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-4 top-20 bottom-4 w-[280px] glass rounded-3xl pt-6 px-6 overflow-hidden"
+              className="absolute right-0 top-0 bottom-0 w-[280px] bg-[var(--surface-1)] border-l border-[var(--border-gold)] pt-20 px-6"
             >
               <ul className="flex flex-col gap-1">
-                {navLinks.map((link, index) => (
+                {navLinks.map((link, i) => (
                   <motion.li
                     key={link.href}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: i * 0.05 }}
                   >
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block py-3 px-4 text-lg font-medium text-[var(--text-mid)] hover:text-bloom hover:bg-white/5 rounded-xl transition-all"
+                      data-testid={`mobile-nav-${link.label.toLowerCase()}-link`}
+                      className={cn(
+                        'block py-3.5 px-4 text-base font-medium transition-all border-b border-[var(--border-subtle)]',
+                        pathname === link.href
+                          ? 'text-[var(--gold)]'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--gold)]'
+                      )}
                     >
                       {link.label}
                     </Link>
                   </motion.li>
                 ))}
               </ul>
-
-              {/* CTA in mobile menu */}
-              <div className="mt-6 pt-6 border-t border-white/10">
+              <div className="mt-8">
                 <Link
                   href="/contact"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="btn-primary w-full text-center"
+                  className="btn-gold w-full text-center block"
+                  data-testid="mobile-nav-cta"
                 >
                   Start a Project
                 </Link>

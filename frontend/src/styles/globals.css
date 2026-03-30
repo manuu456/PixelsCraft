@@ -2,26 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Font Import ── */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap');
+
 :root {
-  /* Black & Gold luxury theme */
-  --gold: #f5c518;
-  --gold-light: #ffd54f;
-  --gold-dark: #c9a227;
-  --gold-muted: #b8960f;
-  --amber: #ffb300;
-  --honey: #ffc107;
-  --bloom: #f5c518;
-  --bloom-light: #ffd54f;
-  --bloom-dark: #c9a227;
-  --black: #0a0a0a;
-  --black-light: #141414;
-  --black-mid: #1a1a1a;
-  --glass-bg: rgba(15, 15, 15, 0.65);
-  --glass-border: rgba(245, 197, 24, 0.15);
-  --text-dark: #f5f5f5;
-  --text-mid: #b8b8b8;
-  --text-light: #ffffff;
-  --text-muted: #707070;
+  --gold: #D4AF37;
+  --gold-light: #FFD700;
+  --gold-muted: #BCA876;
+  --gold-hover: #F3E5AB;
+  --void: #050505;
+  --surface-1: #0A0A0A;
+  --surface-2: #111111;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-gold: rgba(212, 175, 55, 0.2);
+  --border-gold-active: rgba(212, 175, 55, 0.6);
 }
 
 * {
@@ -35,199 +33,144 @@ html {
 }
 
 body {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-family: 'Satoshi', sans-serif;
   min-height: 100vh;
-  background: #050505;
-  color: var(--text-dark);
+  background: var(--void);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
-/* Abstract gold geometric background */
+/* Subtle geometric background */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse at 20% 20%, rgba(245, 197, 24, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(255, 193, 7, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.04) 0%, transparent 60%),
-    linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    radial-gradient(ellipse at 15% 15%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(212, 175, 55, 0.04) 0%, transparent 50%);
 }
 
-/* Subtle gold accent lines */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(135deg, transparent 49.5%, rgba(245, 197, 24, 0.03) 49.5%, rgba(245, 197, 24, 0.03) 50.5%, transparent 50.5%),
-    linear-gradient(45deg, transparent 49.5%, rgba(245, 197, 24, 0.02) 49.5%, rgba(245, 197, 24, 0.02) 50.5%, transparent 50.5%);
-  background-size: 60px 60px;
-}
-
-/* Custom scrollbar - gold theme */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--void);
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
-  border-radius: 10px;
+  border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold-light);
 }
 
-/* Glass morphism utility class - black & gold theme */
-@layer components {
-  .glass {
-    background: rgba(15, 15, 15, 0.70);
-    backdrop-filter: blur(24px) saturate(1.2);
-    -webkit-backdrop-filter: blur(24px) saturate(1.2);
-    border: 1px solid rgba(245, 197, 24, 0.12);
-    border-radius: 24px;
-    box-shadow:
-      0 8px 48px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(245, 197, 24, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-  }
-
-  .glass-nav {
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid rgba(245, 197, 24, 0.1);
-    box-shadow:
-      0 4px 32px rgba(0, 0, 0, 0.4),
-      0 0 20px rgba(245, 197, 24, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 0.02);
-  }
-
-  .glass-nav-scrolled {
-    background: rgba(10, 10, 10, 0.9);
-    border-color: rgba(245, 197, 24, 0.15);
-  }
-
-  .btn-primary {
-    @apply inline-flex items-center justify-center;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #0a0a0a;
-    border: none;
-    border-radius: 99px;
-    padding: 14px 38px;
-    font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow:
-      0 6px 28px rgba(245, 197, 24, 0.3),
-      0 2px 8px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      0 12px 40px rgba(245, 197, 24, 0.4),
-      0 4px 12px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-
-  .btn-glass {
-    @apply inline-flex items-center justify-center;
-    background: rgba(245, 197, 24, 0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(245, 197, 24, 0.2);
-    border-radius: 99px;
-    padding: 14px 38px;
-    font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.25s, background 0.25s, border-color 0.25s;
-  }
-
-  .btn-glass:hover {
-    transform: translateY(-3px);
-    background: rgba(245, 197, 24, 0.15);
-    border-color: rgba(245, 197, 24, 0.35);
-  }
-
-  .section-label {
-    font-size: 0.78rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-
-  .section-title {
-    font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-    font-weight: 700;
-    color: var(--text-dark);
-    text-align: center;
-    line-height: 1.15;
-    margin-bottom: 16px;
-  }
-
-  .section-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  /* Input styles for black & gold theme */
-  .input-dark {
-    background: rgba(245, 197, 24, 0.05);
-    border: 1px solid rgba(245, 197, 24, 0.15);
-    color: var(--text-light);
-  }
-
-  .input-dark::placeholder {
-    color: var(--text-muted);
-  }
-
-  .input-dark:focus {
-    border-color: var(--gold);
-    background: rgba(245, 197, 24, 0.08);
-  }
+/* Selection */
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: var(--text-primary);
 }
 
-/* Focus styles for accessibility */
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
-/* Selection color */
-::selection {
-  background: rgba(245, 197, 24, 0.35);
-  color: var(--text-light);
-}
+@layer components {
+  /* ── Buttons ── */
+  .btn-gold {
+    @apply inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-300;
+    background: var(--gold);
+    color: var(--void);
+    padding: 14px 36px;
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+  .btn-gold:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+  }
 
-/* Ensure text readability on dark */
-.text-bloom {
-  color: var(--gold) !important;
-}
+  .btn-outline {
+    @apply inline-flex items-center justify-center font-medium tracking-wide transition-all duration-300;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-gold);
+    padding: 14px 36px;
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.05);
+    transform: translateY(-2px);
+  }
 
-/* Gold gradient text utility */
-.text-gold-gradient {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  /* ── Section Utils ── */
+  .section-overline {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+
+  .section-heading {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* ── Card ── */
+  .card-surface {
+    background: var(--surface-1);
+    border: 1px solid var(--border-gold);
+    transition: all 0.4s ease;
+  }
+  .card-surface:hover {
+    border-color: var(--border-gold-active);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+  }
+
+  /* ── Glass Nav ── */
+  .glass-header {
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    background: rgba(5, 5, 5, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .glass-header-scrolled {
+    background: rgba(5, 5, 5, 0.9);
+    border-color: rgba(212, 175, 55, 0.15);
+  }
+
+  /* ── Gold gradient text ── */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Form inputs ── */
+  .input-field {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+  }
+  .input-field::placeholder {
+    color: var(--text-muted);
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+  }
 }

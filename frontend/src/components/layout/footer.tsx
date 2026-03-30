@@ -1,161 +1,180 @@
 import Link from 'next/link'
-import { Mail, Phone, MapPin, Twitter, Linkedin, Github, Dribbble } from 'lucide-react'
+import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 
-const footerLinks = {
-  services: [
-    { href: '/services#websites', label: 'Website Development' },
-    { href: '/services#apps', label: 'Mobile Apps' },
-    { href: '/services#automation', label: 'Automation' },
-    { href: '/services#ai-agents', label: 'AI Agents' },
-    { href: '/services#design', label: 'UI/UX Design' },
-  ],
-  company: [
-    { href: '/about', label: 'About Us' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
-  ],
-  social: [
-    { href: 'https://twitter.com/pixelcraft', label: 'Twitter', icon: Twitter },
-    { href: 'https://linkedin.com/company/pixelcraft', label: 'LinkedIn', icon: Linkedin },
-    { href: 'https://github.com/pixelcraft', label: 'GitHub', icon: Github },
-    { href: 'https://dribbble.com/pixelcraft', label: 'Dribbble', icon: Dribbble },
-  ],
-}
+const footerServices = [
+  { href: '/services#websites', label: 'Website Development' },
+  { href: '/services#apps', label: 'Mobile Apps' },
+  { href: '/services#automation', label: 'Automation' },
+  { href: '/services#ai-agents', label: 'AI Agents' },
+  { href: '/services#design', label: 'UI/UX Design' },
+  { href: '/services#security', label: 'Security Audits' },
+]
+
+const footerCompany = [
+  { href: '/about', label: 'About Us' },
+  { href: '/portfolio', label: 'Portfolio' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/contact', label: 'Contact' },
+]
+
+const footerSocial = [
+  { href: 'https://twitter.com/pixelcraft', label: 'Twitter' },
+  { href: 'https://linkedin.com/company/pixelcraft', label: 'LinkedIn' },
+  { href: 'https://github.com/pixelcraft', label: 'GitHub' },
+  { href: 'https://dribbble.com/pixelcraft', label: 'Dribbble' },
+]
 
 export function Footer() {
   return (
-    <footer className="relative mt-20">
-      {/* Glass background */}
-      <div className="absolute inset-0 bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-t border-[rgba(245,197,24,0.1)]" />
+    <footer data-testid="site-footer" className="relative mt-24 border-t border-[var(--border-gold)]">
+      <div className="bg-[var(--surface-1)]">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+            {/* Brand */}
+            <div className="lg:col-span-4">
+              <Link
+                href="/"
+                data-testid="footer-logo"
+                className="inline-flex items-center gap-2 font-heading font-bold text-xl tracking-tight text-[var(--text-primary)] hover:text-[var(--gold)] transition-colors mb-5"
+              >
+                <span className="w-2 h-2 bg-[var(--gold)] inline-block" />
+                PIXELCRAFT
+              </Link>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-8 max-w-xs">
+                Building real world websites, apps, automations &amp; AI agents.
+                Every pixel crafted with purpose.
+              </p>
+              <div className="space-y-3">
+                <a
+                  href="https://maps.google.com/?q=Tirupati,Andhra+Pradesh,India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="footer-address-link"
+                  className="flex items-center gap-3 text-sm text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+                >
+                  <MapPin className="w-4 h-4 text-[var(--gold)] flex-shrink-0" />
+                  Tirupati, Andhra Pradesh, India
+                </a>
+                <a
+                  href="mailto:hello@pixelcraft.studio"
+                  data-testid="footer-email-link"
+                  className="flex items-center gap-3 text-sm text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+                >
+                  <Mail className="w-4 h-4 text-[var(--gold)] flex-shrink-0" />
+                  hello@pixelcraft.studio
+                </a>
+                <a
+                  href="tel:+919391279070"
+                  data-testid="footer-phone-link"
+                  className="flex items-center gap-3 text-sm text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-[var(--gold)] flex-shrink-0" />
+                  +91 93912 79070
+                </a>
+              </div>
+            </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 font-serif font-bold text-2xl text-[var(--gold)] mb-4 hover:opacity-80 transition-opacity"
-            >
-              PixelCraft
-              <span className="inline-block w-2.5 h-2.5 rounded-full bg-[var(--gold)] shadow-[0_0_10px_rgba(245,197,24,0.5)]" />
-            </Link>
-            <p className="text-[var(--text-mid)] text-sm leading-relaxed mb-6 max-w-xs">
-              Building real world websites, apps, automations & AI agents.
-              Every pixel crafted with purpose.
-            </p>
-            <div className="space-y-3">
-              <a
-                href="https://maps.google.com/?q=Tirupati,Andhra+Pradesh,India"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-[var(--text-mid)] hover:text-[var(--gold)] transition-colors"
-              >
-                <MapPin className="w-4 h-4 text-[var(--gold)]" />
-                <span>Tirupati, Andhra Pradesh, India</span>
-              </a>
-              <a
-                href="mailto:hello@pixelcraft.studio"
-                className="flex items-center gap-3 text-sm text-[var(--text-mid)] hover:text-[var(--gold)] transition-colors"
-              >
-                <Mail className="w-4 h-4 text-[var(--gold)]" />
-                <span>hello@pixelcraft.studio</span>
-              </a>
-              <a
-                href="tel:+919876543210"
-                className="flex items-center gap-3 text-sm text-[var(--text-mid)] hover:text-[var(--gold)] transition-colors"
-              >
-                <Phone className="w-4 h-4 text-[var(--gold)]" />
-                <span>+91 98765 43210</span>
-              </a>
+            {/* Services */}
+            <div className="lg:col-span-3">
+              <h4 data-testid="footer-services-heading" className="font-heading font-semibold text-sm tracking-wide uppercase text-[var(--text-primary)] mb-5">
+                Services
+              </h4>
+              <ul className="space-y-3">
+                {footerServices.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      data-testid={`footer-service-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                      className="text-sm text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="lg:col-span-2">
+              <h4 data-testid="footer-company-heading" className="font-heading font-semibold text-sm tracking-wide uppercase text-[var(--text-primary)] mb-5">
+                Company
+              </h4>
+              <ul className="space-y-3">
+                {footerCompany.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      data-testid={`footer-${link.label.toLowerCase().replace(/\s+/g, '-')}-link`}
+                      className="text-sm text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Social & Newsletter */}
+            <div className="lg:col-span-3">
+              <h4 data-testid="footer-connect-heading" className="font-heading font-semibold text-sm tracking-wide uppercase text-[var(--text-primary)] mb-5">
+                Connect
+              </h4>
+              <div className="flex flex-wrap gap-3 mb-8">
+                {footerSocial.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid={`footer-social-${social.label.toLowerCase()}`}
+                    className="px-4 py-2 text-xs font-medium text-[var(--text-secondary)] bg-[var(--surface-2)] border border-[var(--border-subtle)] hover:border-[var(--border-gold-active)] hover:text-[var(--gold)] transition-all flex items-center gap-1.5"
+                  >
+                    {social.label}
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                ))}
+              </div>
+              <p className="text-sm text-[var(--text-secondary)] mb-3">
+                Get insights on tech &amp; AI.
+              </p>
+              <form className="flex gap-2" data-testid="footer-newsletter-form">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  data-testid="footer-newsletter-input"
+                  className="flex-1 px-4 py-2.5 text-sm input-field"
+                />
+                <button
+                  type="submit"
+                  data-testid="footer-newsletter-submit"
+                  className="btn-gold py-2.5 px-5 text-xs"
+                >
+                  Join
+                </button>
+              </form>
             </div>
           </div>
 
-          {/* Services Column */}
-          <div>
-            <h4 className="font-serif font-semibold text-lg text-[var(--text-dark)] mb-5">
-              Services
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[var(--text-mid)] hover:text-[var(--gold)] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Column */}
-          <div>
-            <h4 className="font-serif font-semibold text-lg text-[var(--text-dark)] mb-5">
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[var(--text-mid)] hover:text-[var(--gold)] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Newsletter & Social Column */}
-          <div>
-            <h4 className="font-serif font-semibold text-lg text-[var(--text-dark)] mb-5">
-              Stay Updated
-            </h4>
-            <p className="text-sm text-[var(--text-mid)] mb-4">
-              Get insights on tech, design & AI delivered to your inbox.
+          {/* Bottom Bar */}
+          <div className="mt-16 pt-8 border-t border-[var(--border-subtle)] flex flex-col md:flex-row justify-between items-center gap-4">
+            <p data-testid="footer-copyright" className="text-sm text-[var(--text-muted)]">
+              &copy; {new Date().getFullYear()} PixelCraft. All rights reserved.
             </p>
-            <form className="flex gap-2 mb-6">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 px-4 py-2.5 rounded-xl bg-[rgba(245,197,24,0.05)] border border-[rgba(245,197,24,0.15)] text-sm text-[var(--text-light)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--gold)] focus:ring-2 focus:ring-[rgba(245,197,24,0.2)] backdrop-blur-sm transition-all"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-xl bg-[var(--gold)] text-black text-sm font-semibold hover:bg-[var(--gold-light)] transition-colors shadow-[0_4px_15px_rgba(245,197,24,0.3)]"
-              >
-                Join
-              </button>
-            </form>
-
-            {/* Social Links */}
-            <div className="flex gap-3">
-              {footerLinks.social.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[rgba(245,197,24,0.08)] border border-[rgba(245,197,24,0.15)] flex items-center justify-center text-[var(--text-mid)] hover:text-[var(--gold)] hover:bg-[rgba(245,197,24,0.15)] hover:border-[rgba(245,197,24,0.3)] transition-all"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
-              ))}
+            <div className="flex gap-6">
+              <Link href="/contact" className="text-xs text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/contact" className="text-xs text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-[rgba(245,197,24,0.1)] flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-[var(--text-mid)] opacity-75">
-            Every pixel, crafted with care — Tirupati, India © {new Date().getFullYear()}
-          </p>
-          <p className="text-xs text-[var(--text-muted)]">
-            Built with love by D Manoj Bharadwaj · R Kushal Kumar · Akhil Krishna Prasad · Chakradhar Reddy
+        {/* Large brand text */}
+        <div className="border-t border-[var(--border-subtle)] py-12 text-center overflow-hidden">
+          <p className="font-heading font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter text-[var(--surface-2)] select-none">
+            PIXELCRAFT
           </p>
         </div>
       </div>

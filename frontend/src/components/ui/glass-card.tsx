@@ -7,29 +7,31 @@ import { forwardRef } from 'react'
 interface GlassCardProps extends HTMLMotionProps<'div'> {
   hover?: boolean
   padding?: 'none' | 'sm' | 'md' | 'lg'
+  'data-testid'?: string
 }
 
-const paddingClasses = {
+const paddingMap = {
   none: '',
-  sm: 'p-4',
+  sm: 'p-5',
   md: 'p-6 md:p-8',
-  lg: 'p-8 md:p-10',
+  lg: 'p-8 md:p-12',
 }
 
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, hover = true, padding = 'md', children, ...props }, ref) => {
+  ({ className, hover = true, padding = 'md', children, 'data-testid': testId, ...props }, ref) => {
     return (
       <motion.div
         ref={ref}
+        data-testid={testId}
         className={cn(
-          'glass',
-          paddingClasses[padding],
-          hover && 'transition-all duration-300 hover:-translate-y-2 hover:shadow-glass-hover',
+          'card-surface',
+          paddingMap[padding],
+          hover && 'hover:-translate-y-1',
           className
         )}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
+        viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         {...props}
       >
