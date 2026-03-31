@@ -1,57 +1,63 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Section, SectionHeader, GlassCard } from '@/components/ui'
+import { Section } from '@/components/ui'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ExternalLink } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { BLUR_DATA_URL_DARK } from '@/lib/constants'
 
-const projects = [
+type CategoryId = 'all' | 'security' | 'healthcare' | 'ai'
+
+interface Project {
+  title: string
+  subtitle: string
+  description: string
+  category: CategoryId
+  categoryLabel: string
+  image: string
+  slug: string
+  url: string
+}
+
+const categories: { id: CategoryId; label: string }[] = [
+  { id: 'all', label: 'All Projects' },
+  { id: 'security', label: 'Security' },
+  { id: 'healthcare', label: 'Healthcare' },
+  { id: 'ai', label: 'AI & ML' },
+]
+
+const projects: Project[] = [
   {
-    title: 'CVEarity — Vulnerability Tracker',
-    description: 'CVE tracking and vulnerability management platform',
-    category: 'Security',
-    tags: ['Security', 'Full Stack'],
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&q=75&auto=format&fit=crop',
+    title: 'CVEarity',
+    subtitle: 'Vulnerability Tracker',
+    description: 'Real-time CVE tracking and vulnerability management platform for security teams.',
+    category: 'security',
+    categoryLabel: 'Security',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=85&auto=format&fit=crop',
     slug: 'cvearity',
     url: 'https://cv-earity-jdir.vercel.app/',
   },
   {
-    title: 'Mediconnect — Healthcare Platform',
-    description: 'Connect patients with healthcare providers',
-    category: 'Healthcare',
-    tags: ['Full Stack', 'Healthcare'],
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=75&auto=format&fit=crop',
+    title: 'Mediconnect',
+    subtitle: 'Healthcare Platform',
+    description: 'Seamless patient-provider connections with intelligent appointment scheduling.',
+    category: 'healthcare',
+    categoryLabel: 'Healthcare',
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=85&auto=format&fit=crop',
     slug: 'mediconnect',
     url: 'https://mediconnect-liart.vercel.app',
   },
   {
-    title: 'ChessAI — AI Chess Engine',
-    description: 'Play chess against an intelligent AI opponent',
-    category: 'AI Tool',
-    tags: ['Gen AI', 'Game'],
-    image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=400&q=75&auto=format&fit=crop',
+    title: 'ChessAI',
+    subtitle: 'AI Chess Engine',
+    description: 'Challenge an intelligent AI opponent with adaptive difficulty levels.',
+    category: 'ai',
+    categoryLabel: 'AI',
+    image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=85&auto=format&fit=crop',
     slug: 'chessai',
-    url: 'https://chess-ai-demo.vercel.app/',
-  },
-  {
-    title: 'SecurIT — Security Solutions',
-    description: 'Enterprise security monitoring and management',
-    category: 'Security',
-    tags: ['Security', 'Dashboard'],
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&q=75&auto=format&fit=crop',
-    slug: 'securit',
-    url: null, // Will be added later
-  },
-  {
-    title: 'AIText Humanizer',
-    description: 'AI-powered text humanization tool',
-    category: 'AI Tool',
-    tags: ['Gen AI', 'NLP'],
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&q=75&auto=format&fit=crop',
-    slug: 'aitext-humanizer',
-    url: null, // Will be uploaded later
+    url: '',
   },
 ]
 
@@ -59,109 +65,164 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.15 },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
   },
 }
 
 export function PortfolioSection() {
-  return (
-    <Section id="portfolio">
-      <SectionHeader
-        label="Our Portfolio"
-        title={
-          <>
-            Projects We&apos;re <em>Proud Of</em>
-          </>
-        }
-        subtitle="Real solutions we've built for real businesses. Each project represents our commitment to excellence."
-      />
+  const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
 
+  const filteredProjects = activeCategory === 'all' 
+    ? projects 
+    : projects.filter(p => p.category === activeCategory)
+
+  return (
+    <Section id="portfolio" className="bg-gradient-to-b from-amber-50/50 to-white">
+      {/* Section Header with Sparkle Animation */}
       <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-12"
+      >
+        <p className="text-slate-600 text-sm uppercase tracking-widest mb-4">
+          Portfolio
+        </p>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-3">
+          <motion.span
+            animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            className="text-amber-500"
+          >
+            ✦
+          </motion.span>
+          Our Recent <em className="not-italic text-blue-600">Work</em>
+          <motion.span
+            animate={{ rotate: [0, -15, 15, 0], scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, delay: 0.5 }}
+            className="text-amber-500"
+          >
+            ✦
+          </motion.span>
+        </h2>
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+          Real solutions for real businesses. Each project represents our commitment to excellence.
+        </p>
+      </motion.div>
+
+      {/* Category Filter Tabs */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex items-center justify-center gap-2 md:gap-4 mb-12"
+      >
+        {categories.map((category, index) => (
+          <div key={category.id} className="flex items-center gap-2 md:gap-4">
+            <button
+              onClick={() => setActiveCategory(category.id)}
+              className={`text-sm md:text-base font-medium transition-colors duration-300 px-3 py-1 rounded-full ${
+                activeCategory === category.id
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-gray-400 hover:text-gray-600'
+              }`}
+              data-testid={`portfolio-tab-${category.id}`}
+            >
+              {category.label}
+            </button>
+            {index < categories.length - 1 && (
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+            )}
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Project Cards Grid */}
+      <motion.div
+        key={activeCategory}
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full"
+        viewport={{ once: true, margin: '-50px' }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full"
       >
-        {projects.map((project) => (
+        {filteredProjects.map((project) => (
           <motion.div key={project.slug} variants={itemVariants}>
-            <Link href={`/contact?project=${encodeURIComponent(project.title)}`}>
-              <GlassCard padding="none" className="overflow-hidden group cursor-pointer h-full">
+            <Link
+              href={project.url || `/contact?project=${encodeURIComponent(project.title)}`}
+              target={project.url ? '_blank' : undefined}
+              rel={project.url ? 'noopener noreferrer' : undefined}
+              className="block group"
+            >
+              <div className="relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
                 {/* Image */}
-                <div className="relative h-52 overflow-hidden">
+                <div className="relative h-56 overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     placeholder="blur"
                     blurDataURL={BLUR_DATA_URL_DARK}
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Category Tag */}
-                  <span className="absolute top-4 right-4 px-3 py-1.5 text-xs font-semibold text-black bg-[var(--gold)] rounded-full shadow-lg">
-                    {project.category}
+                  {/* Category Badge */}
+                  <span className="absolute top-4 left-4 px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded-full shadow-lg">
+                    {project.categoryLabel}
                   </span>
 
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-[var(--gold)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[var(--gold)] flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-300">
-                      <ExternalLink className="w-5 h-5 text-black" />
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <ArrowUpRight className="w-6 h-6 text-blue-600" />
                     </div>
                   </div>
                 </div>
 
-                {/* Info */}
-                <div className="p-5">
-                  <h4 className="font-serif text-xl font-semibold text-[var(--text-dark)] mb-1 group-hover:text-[var(--gold)] transition-colors">
+                {/* Content */}
+                <div className="p-6">
+                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                    {project.subtitle}
+                  </p>
+                  <h4 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                     {project.title}
                   </h4>
-                  <p className="text-sm text-[var(--text-muted)] mb-3">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {project.description}
                   </p>
-                  <div className="flex gap-2 flex-wrap">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 text-xs font-medium text-[var(--gold)] bg-[rgba(245,197,24,0.1)] border border-[rgba(245,197,24,0.2)] rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-              </GlassCard>
+              </div>
             </Link>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* View All Link */}
+      {/* View All Button */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.4 }}
         className="mt-12"
       >
         <Link
           href="/portfolio"
-          className="btn-glass inline-flex items-center gap-2"
+          className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-blue-600 border-2 border-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300"
         >
-          View All Projects
-          <span>→</span>
+          View all projects
+          <ArrowUpRight className="w-4 h-4" />
         </Link>
       </motion.div>
     </Section>

@@ -103,7 +103,7 @@ export default function BlogPage() {
   const regularPosts = posts.filter((post) => !post.featured)
 
   return (
-    <div className="pt-28">
+    <div className="pt-28 bg-[#faf9f6] min-h-screen">
       <Section>
         <SectionHeader
           label="Our Blog"
@@ -122,8 +122,8 @@ export default function BlogPage() {
               key={category}
               className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
                 category === 'All'
-                  ? 'bg-[var(--gold)] text-black shadow-lg shadow-[var(--gold)]/30'
-                  : 'bg-white/8 text-[var(--text-mid)] hover:bg-white/15 border border-white/10 hover:border-[var(--gold)]/30'
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
               }`}
             >
               {category}
@@ -148,23 +148,23 @@ export default function BlogPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-[var(--gold)] text-black rounded-full text-xs font-semibold">
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-indigo-600 text-white rounded-full text-xs font-semibold">
                     Featured
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="p-6">
-                  <span className="text-xs font-medium text-[var(--gold)] uppercase tracking-wider">
+                  <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
                     {post.category}
                   </span>
-                  <h3 className="font-serif text-xl font-semibold text-[var(--text-dark)] mt-2 mb-3 group-hover:text-[var(--gold)] transition-colors">
+                  <h3 className="font-serif text-xl font-semibold text-slate-900 mt-2 mb-3 group-hover:text-indigo-600 transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-[var(--text-mid)] leading-relaxed mb-4">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
+                  <div className="flex items-center gap-4 text-xs text-slate-500">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />
                       {formatDate(post.date)}
@@ -201,22 +201,22 @@ export default function BlogPage() {
 
                 {/* Content */}
                 <div className="p-5">
-                  <span className="text-xs font-medium text-[var(--gold)] uppercase tracking-wider">
+                  <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
                     {post.category}
                   </span>
-                  <h3 className="font-serif text-lg font-semibold text-[var(--text-dark)] mt-2 mb-3 group-hover:text-[var(--gold)] transition-colors">
+                  <h3 className="font-serif text-lg font-semibold text-slate-900 mt-2 mb-3 group-hover:text-indigo-600 transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-[var(--text-mid)] leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-4 line-clamp-2">
                     {post.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
                       <span>{formatDate(post.date)}</span>
                       <span>·</span>
                       <span>{post.readTime}</span>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="w-4 h-4 text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
               </GlassCard>

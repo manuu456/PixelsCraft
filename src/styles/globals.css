@@ -3,25 +3,56 @@
 @tailwind utilities;
 
 :root {
-  /* Black & Gold luxury theme */
-  --gold: #f5c518;
-  --gold-light: #ffd54f;
-  --gold-dark: #c9a227;
-  --gold-muted: #b8960f;
-  --amber: #ffb300;
-  --honey: #ffc107;
-  --bloom: #f5c518;
-  --bloom-light: #ffd54f;
-  --bloom-dark: #c9a227;
-  --black: #0a0a0a;
-  --black-light: #141414;
-  --black-mid: #1a1a1a;
-  --glass-bg: rgba(15, 15, 15, 0.65);
-  --glass-border: rgba(245, 197, 24, 0.15);
-  --text-dark: #f5f5f5;
-  --text-mid: #b8b8b8;
+  /* Mendx Theme - Warm light background with dark accents */
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-light: #818cf8;
+  
+  /* Warm light backgrounds */
+  --bg-primary: #f5f5f0;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #fafaf8;
+  --bg-card: #ffffff;
+  
+  /* Dark section backgrounds */
+  --bg-dark: #0f172a;
+  --bg-dark-card: #1e293b;
+  --bg-dark-surface: #334155;
+  
+  /* Text hierarchy */
+  --text-primary: #1d1d1f;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-dark: #1d1d1f;
+  --text-mid: #4b5563;
   --text-light: #ffffff;
-  --text-muted: #707070;
+  --text-muted: #9ca3af;
+  
+  /* Borders & shadows */
+  --border-light: rgba(0, 0, 0, 0.06);
+  --border-medium: rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+  
+  /* Service card colors */
+  --service-red: #ef4444;
+  --service-pink: #ec4899;
+  --service-navy: #1e3a5f;
+  --service-mint: #10b981;
+  
+  /* Legacy variables for compatibility */
+  --gold: #6366f1;
+  --bloom: #6366f1;
+  
+  /* Mendx animation curves */
+  --ease-mendx: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * {
@@ -32,202 +63,354 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-family: var(--font-dm-sans), 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   min-height: 100vh;
-  background: #050505;
-  color: var(--text-dark);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Abstract gold geometric background */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(245, 197, 24, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(255, 193, 7, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.04) 0%, transparent 60%),
-    linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
-}
-
-/* Subtle gold accent lines */
+/* Clean background - no gradients */
+body::before,
 body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(135deg, transparent 49.5%, rgba(245, 197, 24, 0.03) 49.5%, rgba(245, 197, 24, 0.03) 50.5%, transparent 50.5%),
-    linear-gradient(45deg, transparent 49.5%, rgba(245, 197, 24, 0.02) 49.5%, rgba(245, 197, 24, 0.02) 50.5%, transparent 50.5%);
-  background-size: 60px 60px;
+  display: none;
 }
 
-/* Custom scrollbar - gold theme */
+/* Apple-style minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-light);
+  background: rgba(0, 0, 0, 0.25);
 }
 
-/* Glass morphism utility class - black & gold theme */
+/* Mendx-style component classes */
 @layer components {
-  .glass {
-    background: rgba(15, 15, 15, 0.70);
-    backdrop-filter: blur(24px) saturate(1.2);
-    -webkit-backdrop-filter: blur(24px) saturate(1.2);
-    border: 1px solid rgba(245, 197, 24, 0.12);
+  /* Mendx card - white with rounded corners and shadow */
+  .mendx-card {
+    background: var(--bg-card);
     border-radius: 24px;
-    box-shadow:
-      0 8px 48px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(245, 197, 24, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s var(--ease-out-expo);
   }
 
+  .mendx-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+
+  /* Mendx card with expand effect on hover */
+  .mendx-card-hover {
+    background: var(--bg-card);
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s var(--ease-out-expo);
+    overflow: hidden;
+  }
+
+  .mendx-card-hover:hover {
+    transform: scaleX(1.02) translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Mendx primary button - purple/indigo pill */
+  .mendx-btn-primary {
+    @apply inline-flex items-center justify-center gap-2;
+    position: relative;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 980px;
+    padding: 14px 28px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s var(--ease-mendx);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  }
+
+  .mendx-btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  .mendx-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* Mendx dark section for contrast areas */
+  .mendx-section-dark {
+    background: var(--bg-dark);
+    color: var(--text-light);
+  }
+
+  .mendx-section-dark .mendx-card {
+    background: var(--bg-dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Glass nav that becomes white on scroll */
+  .glass-nav-mendx {
+    background: transparent;
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+    transition: all 0.4s var(--ease-out-expo);
+  }
+
+  .glass-nav-mendx-scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Legacy glass styles updated for Mendx */
+  .glass {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s var(--ease-mendx);
+  }
+
+  .glass:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+
+  /* Clean navigation */
   .glass-nav {
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid rgba(245, 197, 24, 0.1);
-    box-shadow:
-      0 4px 32px rgba(0, 0, 0, 0.4),
-      0 0 20px rgba(245, 197, 24, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s var(--ease-mendx);
   }
 
   .glass-nav-scrolled {
-    background: rgba(10, 10, 10, 0.9);
-    border-color: rgba(245, 197, 24, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-md);
   }
 
+  /* Primary button — Indigo/Purple */
   .btn-primary {
-    @apply inline-flex items-center justify-center;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #0a0a0a;
+    @apply inline-flex items-center justify-center gap-2;
+    position: relative;
+    background: var(--accent);
+    color: white;
     border: none;
-    border-radius: 99px;
-    padding: 14px 38px;
-    font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    border-radius: 980px;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     cursor: pointer;
     text-decoration: none;
-    box-shadow:
-      0 6px 28px rgba(245, 197, 24, 0.3),
-      0 2px 8px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: transform 0.25s, box-shadow 0.25s;
+    transition: all 0.3s var(--ease-mendx);
   }
 
   .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      0 12px 40px rgba(245, 197, 24, 0.4),
-      0 4px 12px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: var(--accent-hover);
+    transform: scale(1.02);
   }
 
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* Secondary button — outlined */
   .btn-glass {
-    @apply inline-flex items-center justify-center;
-    background: rgba(245, 197, 24, 0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(245, 197, 24, 0.2);
-    border-radius: 99px;
-    padding: 14px 38px;
-    font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    @apply inline-flex items-center justify-center gap-2;
+    position: relative;
+    background: transparent;
+    border: 1px solid var(--border-medium);
+    border-radius: 980px;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 0.9375rem;
     font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.04em;
+    color: var(--accent);
+    letter-spacing: -0.01em;
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.25s, background 0.25s, border-color 0.25s;
+    transition: all 0.3s var(--ease-mendx);
   }
 
   .btn-glass:hover {
-    transform: translateY(-3px);
-    background: rgba(245, 197, 24, 0.15);
-    border-color: rgba(245, 197, 24, 0.35);
+    background: var(--bg-secondary);
+    border-color: var(--accent);
   }
 
+  /* Section label — subtle badge */
   .section-label {
-    font-size: 0.78rem;
-    letter-spacing: 0.24em;
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 500;
-    margin-bottom: 10px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
   }
 
+  /* Section title — Mendx style */
   .section-title {
-    font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-    font-weight: 700;
-    color: var(--text-dark);
+    font-family: var(--font-cormorant), 'SF Pro Display', -apple-system, serif;
+    font-weight: 600;
+    color: var(--text-primary);
     text-align: center;
-    line-height: 1.15;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     margin-bottom: 16px;
   }
 
   .section-title em {
-    font-style: italic;
-    color: var(--gold);
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  /* Input styles for black & gold theme */
+  /* Input styles */
   .input-dark {
-    background: rgba(245, 197, 24, 0.05);
-    border: 1px solid rgba(245, 197, 24, 0.15);
-    color: var(--text-light);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    border-radius: 12px;
+    transition: all 0.2s var(--ease-mendx);
   }
 
   .input-dark::placeholder {
-    color: var(--text-muted);
+    color: var(--text-tertiary);
   }
 
   .input-dark:focus {
-    border-color: var(--gold);
-    background: rgba(245, 197, 24, 0.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    outline: none;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Service card variants */
+  .service-card-red {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+  }
+
+  .service-card-pink {
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+  }
+
+  .service-card-navy {
+    background: linear-gradient(135deg, #1e3a5f 0%, #334155 100%);
+  }
+
+  .service-card-mint {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   }
 }
 
-/* Focus styles for accessibility */
+/* Focus styles */
 :focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-/* Selection color */
+/* Selection */
 ::selection {
-  background: rgba(245, 197, 24, 0.35);
-  color: var(--text-light);
+  background: rgba(99, 102, 241, 0.2);
+  color: var(--text-primary);
 }
 
-/* Ensure text readability on dark */
+/* Text utilities */
 .text-bloom {
-  color: var(--gold) !important;
+  color: var(--accent) !important;
 }
 
-/* Gold gradient text utility */
 .text-gold-gradient {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s var(--ease-mendx);
+}
+
+/* Link underline animation */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease-mendx);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Marquee animation for carousel */
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Counter animation utility */
+.animate-counter {
+  animation: counter 2s ease-out forwards;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

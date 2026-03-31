@@ -39,8 +39,8 @@ export function Footer() {
               <a href="https://maps.google.com/?q=Tirupati,Andhra+Pradesh,India" target="_blank" rel="noopener noreferrer" data-testid="footer-address-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
                 <MapPin className="w-4 h-4 text-gold flex-shrink-0" />Tirupati, Andhra Pradesh
               </a>
-              <a href="mailto:hello@pixelcraft.studio" data-testid="footer-email-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
-                <Mail className="w-4 h-4 text-gold flex-shrink-0" />hello@pixelcraft.studio
+              <a href="mailto:contact@pixelscraft.online" data-testid="footer-email-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
+                <Mail className="w-4 h-4 text-gold flex-shrink-0" />contact@pixelscraft.online
               </a>
               <a href="tel:+919391279070" data-testid="footer-phone-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
                 <Phone className="w-4 h-4 text-gold flex-shrink-0" />+91 93912 79070

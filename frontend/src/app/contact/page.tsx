@@ -5,7 +5,7 @@ import { MapPin, Mail, Phone, Clock, Send, CheckCircle } from 'lucide-react'
 
 const contactInfo = [
   { icon: MapPin, label: 'Location', value: 'Tirupati, Andhra Pradesh, India' },
-  { icon: Mail, label: 'Email', value: 'hello@pixelcraft.studio' },
+  { icon: Mail, label: 'Email', value: 'contact@pixelscraft.online' },
   { icon: Phone, label: 'Phone', value: '+91 93912 79070' },
   { icon: Clock, label: 'Hours', value: 'Mon - Sat, 9 AM - 7 PM IST' },
 ]

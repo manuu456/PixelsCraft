@@ -23,15 +23,15 @@ export function Section({
     <motion.section
       id={id}
       className={cn(
-        'relative px-6 md:px-12 py-20 md:py-28',
+        'relative px-6 md:px-12 lg:px-16 py-24 md:py-32',
         fullHeight && 'min-h-screen',
         centered && 'flex flex-col justify-center items-center',
         className
       )}
-      initial={{ opacity: 0, y: 48 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.section>
@@ -47,14 +47,20 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ label, title, subtitle, className }: SectionHeaderProps) {
   return (
-    <div className={cn('text-center mb-12 md:mb-16', className)}>
-      <p className="section-label">{label}</p>
-      <h2 className="section-title text-3xl md:text-4xl lg:text-5xl">{title}</h2>
+    <motion.div 
+      className={cn('text-center mb-16 md:mb-20 max-w-3xl mx-auto', className)}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <span className="section-label">{label}</span>
+      <h2 className="section-title text-display-md">{title}</h2>
       {subtitle && (
-        <p className="text-base text-[var(--text-mid)] max-w-xl mx-auto leading-relaxed mt-4">
+        <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed mt-6">
           {subtitle}
         </p>
       )}
-    </div>
+    </motion.div>
   )
 }

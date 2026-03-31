@@ -138,7 +138,7 @@ export default function ServicesPage() {
               key={service.slug}
               id={service.slug}
               padding="none"
-              className="flex flex-col scroll-mt-28 overflow-hidden"
+              className="flex flex-col scroll-mt-28 overflow-hidden !bg-white shadow-lg border-slate-200/50"
             >
               {/* Image Header */}
               <div className="relative h-40 overflow-hidden">
@@ -151,9 +151,9 @@ export default function ServicesPage() {
                   blurDataURL={BLUR_DATA_URL_DARK}
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
                 <div
-                  className={`absolute bottom-4 left-6 w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${service.gradient} text-black shadow-lg`}
+                  className={`absolute bottom-4 left-6 w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${service.gradient} text-white shadow-lg`}
                 >
                   <service.icon className="w-7 h-7" />
                 </div>
@@ -163,10 +163,10 @@ export default function ServicesPage() {
               <div className="p-6">
                 {/* Header */}
                 <div className="mb-6">
-                  <h3 className="font-serif text-2xl font-semibold text-[var(--text-dark)] mb-2">
+                  <h3 className="font-serif text-2xl font-semibold text-slate-900 mb-2">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-[var(--text-mid)] leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     {service.description}
                   </p>
                 </div>
@@ -176,9 +176,9 @@ export default function ServicesPage() {
                   {service.features.map((feature) => (
                     <div
                       key={feature}
-                      className="flex items-center gap-2 text-sm text-[var(--text-mid)]"
+                      className="flex items-center gap-2 text-sm text-slate-700"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] flex-shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0" />
                       {feature}
                     </div>
                   ))}
@@ -187,7 +187,7 @@ export default function ServicesPage() {
                 {/* CTA */}
                 <Link
                   href={`/contact?service=${encodeURIComponent(service.title)}`}
-                  className="inline-flex items-center gap-2 text-[var(--gold)] font-medium text-sm hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium text-sm hover:gap-3 transition-all"
                 >
                   Get a quote for {service.title}
                   <ArrowRight className="w-4 h-4" />

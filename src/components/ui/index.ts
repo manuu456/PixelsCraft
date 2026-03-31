@@ -1,3 +1,6 @@
 export { GlassCard } from './glass-card'
 export { Button } from './button'
 export { Section, SectionHeader } from './section'
+export { Preloader } from './preloader'
+export { ExpandableServiceCard } from './expandable-service-card'
+export type { ServiceCardColor } from './expandable-service-card'

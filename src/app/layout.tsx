@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: 'PixelCraft — Building Real World Websites, Apps & AI Agents',
     description:
       'Crafting beautiful websites, mobile apps, automation solutions, and AI agents.',
-    url: 'https://pixelcraft.studio',
+    url: 'https://pixelscraft.online',
     siteName: 'PixelCraft',
     locale: 'en_US',
     type: 'website',
@@ -63,7 +63,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-[#f5f5f0]">
         <Navbar />
         <main>{children}</main>
         <Footer />
