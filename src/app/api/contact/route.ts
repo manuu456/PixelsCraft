@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Send notification email to you
     await resend.emails.send({
-      from: 'PixelsCraft <contact@pixelscraft.online>',
+      from: 'PixelsCraft Website <noreply@pixelscraft.online>',
       to: 'contact@pixelscraft.online',
       replyTo: email,
       subject: `New Inquiry: ${projectType || 'General'} from ${name}`,
@@ -36,9 +36,6 @@ export async function POST(request: NextRequest) {
         </div>
       `,
     })
-
-    // Note: Resend free tier can only send to your own verified email
-    // Auto-reply to user requires verifying your domain
 
     return NextResponse.json({ success: true, message: 'Message sent successfully' })
   } catch (error: unknown) {
