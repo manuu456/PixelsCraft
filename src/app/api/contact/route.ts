@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Send notification email to you
     await resend.emails.send({
-      from: 'PixelCraft <onboarding@resend.dev>',
+      from: 'PixelsCraft <contact@pixelscraft.online>',
       to: 'contact@pixelscraft.online',
       replyTo: email,
       subject: `New Inquiry: ${projectType || 'General'} from ${name}`,
