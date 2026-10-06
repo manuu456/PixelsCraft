@@ -1,10 +1,30 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowRight, Search, Briefcase, ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowRight, Search, Briefcase, ChevronDown, Check } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { projects } from '@/lib/projects'
+
+// Shown in the "Latest" badge above the headline
+const latestProject = projects.find((p) => p.slug === 'curo')
+
+// Quick shortcuts under the search bar
+const popularSearches = ['Web Development', 'Mobile Apps', 'AI Solutions']
+
+// Round glass arrow used inside the photo-card caption bars
+function HeroArrow() {
+  return (
+    <span
+      aria-hidden="true"
+      className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_6px_14px_-6px_rgba(0,0,0,0.4)] transition-all duration-300 group-hover:bg-indigo-600 group-hover:scale-105"
+    >
+      <ArrowRight className="w-4 h-4 text-slate-800 group-hover:text-white group-hover:-rotate-45 transition-all duration-300" />
+    </span>
+  )
+}
 
 // Animation variants
 const containerVariants = {
@@ -184,18 +204,86 @@ const serviceTypes = [
   'Other',
 ]
 
+// Where each dropdown choice lands (anchors match the cards on /services)
+const serviceRoutes: Record<string, string> = {
+  'Web Development': '/services#websites',
+  'Mobile Apps': '/services#apps',
+  'AI Solutions': '/services#ai-agents',
+  'Automation': '/services#automation',
+  'UI/UX Design': '/services#design',
+}
+
+// Free-text search: first keyword match wins
+const keywordRoutes: [RegExp, string][] = [
+  [/secur|pentest|audit|vulnerab|hack/i, '/services#security'],
+  [/\bai\b|agent|chat ?bot|gpt|llm|machine learning|\bml\b/i, '/services#ai-agents'],
+  [/\bapps?\b|android|\bios\b|mobile|flutter|react native/i, '/services#apps'],
+  [/automat|workflow|integrat|script|zapier/i, '/services#automation'],
+  [/design|\bui\b|\bux\b|figma|brand|logo/i, '/services#design'],
+  [/web|site|landing|e-?commerce|shop|store|next\.?js|react|seo/i, '/services#websites'],
+  [/portfolio|\bprojects?\b|case stud/i, '/portfolio'],
+  [/price|pricing|cost|quote|hire|contact/i, '/contact'],
+]
+
+function resolveSearchRoute(service: string, query: string) {
+  const q = query.trim()
+  if (q) {
+    const match = keywordRoutes.find(([re]) => re.test(q))
+    if (match) return match[1]
+  }
+  if (serviceRoutes[service]) return serviceRoutes[service]
+  if (service === 'Cloud Services' || service === 'Other' || q) {
+    const topic = service !== 'Select Service' ? service : 'General enquiry'
+    const params = new URLSearchParams({ service: topic })
+    if (q) params.set('message', q)
+    return `/contact?${params.toString()}`
+  }
+  return '/services'
+}
+
 export function HeroSection() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedServiceType, setSelectedServiceType] = useState('Select Service')
   const [isServiceTypeOpen, setIsServiceTypeOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close the dropdown on outside tap / Escape, like a native menu
+  useEffect(() => {
+    if (!isServiceTypeOpen) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsServiceTypeOpen(false)
+      }
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsServiceTypeOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isServiceTypeOpen])
+
+  const handleSearch = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    router.push(resolveSearchRoute(selectedServiceType, searchQuery))
+  }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 px-4 sm:px-6 lg:px-8 pt-28 pb-16 md:pt-36 md:pb-20">
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-100/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-100/40 rounded-full blur-3xl" />
+    <section className="relative min-h-screen overflow-hidden px-4 sm:px-6 lg:px-8 pt-28 pb-16 md:pt-36 md:pb-20">
+      {/* Colour fields for the glass to pick up */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-24 left-1/4 w-[28rem] h-[28rem] rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(129,140,248,0.35), transparent)' }} />
+        <div className="absolute top-40 right-[12%] w-80 h-80 rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(244,114,182,0.18), transparent)' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(52,211,153,0.18), transparent)' }} />
+        {/* Soft dotted texture fading out toward the edges */}
+        <div
+          className="absolute inset-0 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]"
+          style={{ backgroundImage: 'radial-gradient(rgba(79,70,229,0.18) 1px, transparent 1px)', backgroundSize: '22px 22px' }}
+        />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -223,31 +311,56 @@ export function HeroSection() {
             animate="visible"
             className="text-center max-w-3xl mx-auto px-4 lg:px-20"
           >
+            {/* "Latest work" glass badge */}
+            {latestProject && (
+              <motion.div variants={itemVariants} className="mb-7">
+                <Link
+                  href="/portfolio"
+                  className="lg-chip group pl-1.5 pr-4 py-1.5 text-[13px] text-slate-700 hover:text-slate-900 transition-colors active:scale-[0.97]"
+                >
+                  <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
+                    Latest
+                  </span>
+                  <span className="truncate max-w-[13rem] sm:max-w-none">
+                    <span className="font-semibold">{latestProject.name}</span>
+                    <span className="hidden sm:inline"> · {latestProject.tagline}</span>
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-indigo-500 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </motion.div>
+            )}
+
             {/* Headline */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6"
+              className="text-[2.6rem] sm:text-6xl lg:text-7xl xl:text-[5.25rem] font-bold tracking-[-0.035em] text-slate-900 leading-[1.04] mb-6"
             >
               Building Digital{' '}
               <span className="relative inline-flex items-center">
                 <span className="relative">
-                  Excellence
+                  <span className="text-brand-gradient animate-sheen pb-1">Excellence</span>
                   <motion.span
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute -bottom-1 left-0 right-0 h-3 bg-indigo-200/60 -z-10 origin-left rounded-sm"
+                    className="absolute -bottom-1 left-0 right-0 h-3 -z-10 origin-left rounded-full bg-gradient-to-r from-indigo-200/70 via-violet-200/70 to-sky-200/70 blur-[2px]"
                   />
                 </span>
                 {/* Inline Sparkle Icon */}
                 <motion.span
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1, duration: 0.4 }}
+                  initial={{ opacity: 0, scale: 0, rotate: -30 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ delay: 1, duration: 0.5, type: 'spring', stiffness: 260, damping: 14 }}
                   className="inline-flex ml-2"
                 >
-                  <svg className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" />
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 drop-shadow-[0_6px_14px_rgba(99,102,241,0.45)]" viewBox="0 0 24 24">
+                    <defs>
+                      <linearGradient id="hero-star" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stopColor="#6366f1" />
+                        <stop offset="1" stopColor="#a855f7" />
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#hero-star)" d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" />
                   </svg>
                 </motion.span>
               </span>
@@ -263,74 +376,116 @@ export function HeroSection() {
             </motion.p>
 
             {/* Search Bar */}
-            <motion.div
+            <motion.form
               variants={searchBarVariants}
-              className="bg-white shadow-xl shadow-slate-200/50 border border-slate-200 rounded-2xl p-2 max-w-2xl mx-auto"
+              onSubmit={handleSearch}
+              role="search"
+              // z-30: backdrop-filter makes this a stacking context, so lift it above the photo cards or the dropdown would open underneath them
+              className="lg-panel relative z-30 rounded-[24px] p-2 max-w-2xl mx-auto"
               data-testid="hero-search-bar"
             >
               <div className="flex flex-col sm:flex-row gap-2">
                 {/* Service Type Dropdown */}
-                <div className="relative flex-shrink-0 sm:w-48">
+                <div ref={dropdownRef} className="relative flex-shrink-0 sm:w-48">
                   <button
+                    type="button"
                     onClick={() => setIsServiceTypeOpen(!isServiceTypeOpen)}
-                    className="w-full flex items-center gap-2 px-4 py-3.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-left transition-colors"
+                    aria-haspopup="listbox"
+                    aria-expanded={isServiceTypeOpen}
+                    className="w-full flex items-center gap-2 px-4 py-3.5 bg-white/70 hover:bg-white active:bg-slate-100 ring-1 ring-black/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,1)] rounded-[16px] text-left transition-colors"
                     data-testid="hero-service-dropdown"
                   >
                     <Briefcase className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                    <span className="text-slate-700 text-sm truncate flex-1">{selectedServiceType}</span>
-                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform flex-shrink-0 ${isServiceTypeOpen ? 'rotate-180' : ''}`} />
+                    <span className={`text-sm truncate flex-1 ${selectedServiceType === 'Select Service' ? 'text-slate-500' : 'text-slate-800 font-medium'}`}>
+                      {selectedServiceType}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 flex-shrink-0 ${isServiceTypeOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  
-                  {isServiceTypeOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50"
-                    >
-                      {serviceTypes.map((service) => (
-                        <button
-                          key={service}
-                          onClick={() => {
-                            setSelectedServiceType(service)
-                            setIsServiceTypeOpen(false)
-                          }}
-                          className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
-                        >
-                          {service}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
+
+                  <AnimatePresence>
+                    {isServiceTypeOpen && (
+                      <motion.div
+                        role="listbox"
+                        initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                        transition={{ duration: 0.16, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="absolute top-full left-0 right-0 sm:right-auto sm:w-56 mt-2 p-1.5 rounded-[18px] overflow-hidden z-50 origin-top text-left bg-white/[0.97] backdrop-blur-xl ring-1 ring-black/[0.06] shadow-[0_24px_48px_-16px_rgba(30,27,75,0.35),inset_0_1px_0_rgba(255,255,255,1)]"
+                      >
+                        {serviceTypes.map((service) => {
+                          const selected = service === selectedServiceType
+                          return (
+                            <button
+                              type="button"
+                              role="option"
+                              aria-selected={selected}
+                              key={service}
+                              onClick={() => {
+                                setSelectedServiceType(service)
+                                setIsServiceTypeOpen(false)
+                              }}
+                              className={`relative w-full flex items-center justify-between px-3 py-2.5 rounded-[12px] text-left text-sm transition-colors ${
+                                selected ? 'text-indigo-700 bg-indigo-50/90' : 'text-slate-700 hover:bg-white/80 active:bg-slate-100'
+                              }`}
+                            >
+                              {service}
+                              {selected && <Check className="w-4 h-4 text-indigo-600" />}
+                            </button>
+                          )
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Divider */}
-                <div className="hidden sm:block w-px bg-slate-200 my-2" />
+                <div className="hidden sm:block w-px bg-slate-900/[0.08] my-2" />
 
                 {/* Search Input */}
-                <div className="flex-1 flex items-center gap-2 px-4 py-3.5">
+                <label className="flex-1 flex items-center gap-2 px-4 py-3.5 cursor-text">
                   <Search className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <span className="sr-only">What are you looking for?</span>
                   <input
-                    type="text"
+                    type="search"
+                    enterKeyHint="search"
                     placeholder="What are you looking for?"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 bg-transparent text-slate-800 placeholder:text-slate-500 outline-none text-sm"
+                    className="flex-1 min-w-0 bg-transparent text-slate-800 placeholder:text-slate-500 outline-none text-base sm:text-sm [&::-webkit-search-cancel-button]:hidden"
                     data-testid="hero-search-input"
                   />
-                </div>
+                </label>
 
                 {/* Search Button */}
                 <motion.button
+                  type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/services')}
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-indigo-500/25"
+                  className="btn-glossy flex items-center justify-center gap-2 px-6 py-3.5 font-semibold rounded-[16px]"
                   data-testid="hero-search-button"
                 >
                   <span>Search</span>
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
               </div>
+            </motion.form>
+
+            {/* Popular shortcuts */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm"
+            >
+              <span className="hidden sm:inline text-slate-500">Popular:</span>
+              {popularSearches.map((service) => (
+                <button
+                  key={service}
+                  type="button"
+                  onClick={() => router.push(resolveSearchRoute(service, ''))}
+                  className="lg-chip px-3 sm:px-3.5 py-1.5 text-[12.5px] sm:text-[13px] font-medium text-slate-700 hover:text-indigo-600 active:scale-95 transition-all"
+                >
+                  {service}
+                </button>
+              ))}
             </motion.div>
           </motion.div>
 
@@ -360,7 +515,7 @@ export function HeroSection() {
             whileHover={{ y: -6, transition: { duration: 0.3 } }}
             className="md:col-span-6 lg:col-span-5 relative group cursor-pointer"
           >
-            <div className="relative h-72 md:h-80 lg:h-96 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-slate-200/30">
+            <Link href="/about" aria-label="Skilled experts, reliable service — meet the team" className="block relative h-72 md:h-80 lg:h-96 rounded-[28px] overflow-hidden ring-1 ring-black/5 shadow-[0_24px_50px_-24px_rgba(30,27,75,0.45)] active:scale-[0.98] transition-transform">
               <Image
                 src="https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=800&q=90"
                 alt="Team working in modern office"
@@ -368,28 +523,22 @@ export function HeroSection() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
               <div className="absolute inset-0 bg-radial-gradient pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
               
-              {/* Text Overlay */}
-              <div className="absolute bottom-6 left-6 right-16">
-                <h3 className="text-lg lg:text-xl font-semibold text-white leading-snug tracking-tight">
-                  Skilled Experts, Reliable Service
-                </h3>
-                <p className="text-white/70 text-sm mt-1.5 hidden sm:block leading-relaxed">
-                  Professional teams ready to deliver
-                </p>
+              {/* Frosted caption bar */}
+              <div className="lg-dark absolute inset-x-3 bottom-3 rounded-[20px] p-4 pl-5 flex items-center gap-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg lg:text-xl font-semibold text-white leading-snug tracking-tight">
+                    Skilled Experts, Reliable Service
+                  </h3>
+                  <p className="text-white/75 text-sm mt-1 hidden sm:block leading-relaxed">
+                    Professional teams ready to deliver
+                  </p>
+                </div>
+                <HeroArrow />
               </div>
-
-              {/* Arrow Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="absolute bottom-6 right-6 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md border border-slate-200/50 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 text-slate-800 group-hover:text-white transition-colors" />
-              </motion.button>
-            </div>
+            </Link>
           </motion.div>
 
           {/* Card 2 - Medium with Stats below */}
@@ -404,7 +553,7 @@ export function HeroSection() {
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
               className="relative group cursor-pointer flex-1"
             >
-              <div className="relative h-48 md:h-52 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-slate-200/30">
+              <Link href="/contact" aria-label="Fast booking, instant help — contact us" className="block relative h-48 md:h-52 rounded-[28px] overflow-hidden ring-1 ring-black/5 shadow-[0_24px_50px_-24px_rgba(30,27,75,0.45)] active:scale-[0.98] transition-transform">
                 <Image
                   src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=90"
                   alt="Professional meeting"
@@ -412,29 +561,22 @@ export function HeroSection() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
                 <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
                 
-                <div className="absolute bottom-5 left-5 right-14">
-                  <h3 className="text-base font-semibold text-white leading-snug tracking-tight">
+                <div className="lg-dark absolute inset-x-3 bottom-3 rounded-[18px] py-2.5 pl-4 pr-2.5 flex items-center gap-3">
+                  <h3 className="flex-1 min-w-0 text-base font-semibold text-white leading-snug tracking-tight">
                     Fast Booking, Instant Help
                   </h3>
+                  <HeroArrow />
                 </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="absolute bottom-5 right-5 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md border border-slate-200/50 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-colors"
-                >
-                  <ArrowRight className="w-4 h-4 text-slate-800 group-hover:text-white transition-colors" />
-                </motion.button>
-              </div>
+              </Link>
             </motion.div>
 
             {/* Stats Card */}
             <motion.div
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="bg-white border border-slate-200 rounded-2xl p-5 shadow-lg shadow-slate-100"
+              className="lg-panel rounded-[24px] p-5"
               data-testid="hero-stats-card"
             >
               <div className="flex items-center gap-4">
@@ -474,7 +616,7 @@ export function HeroSection() {
             whileHover={{ y: -6, transition: { duration: 0.3 } }}
             className="md:col-span-12 lg:col-span-3 relative group cursor-pointer"
           >
-            <div className="relative h-72 md:h-64 lg:h-full min-h-[280px] rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-slate-200/30">
+            <Link href="/services" aria-label="Safe, easy, on-demand — explore our services" className="block relative h-72 md:h-64 lg:h-full min-h-[280px] rounded-[28px] overflow-hidden ring-1 ring-black/5 shadow-[0_24px_50px_-24px_rgba(30,27,75,0.45)] active:scale-[0.98] transition-transform">
               <Image
                 src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=90"
                 alt="Clean code dev setup"
@@ -482,26 +624,21 @@ export function HeroSection() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 25vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
               <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
               
-              <div className="absolute bottom-6 left-6 right-16">
-                <h3 className="text-base font-semibold text-white leading-snug tracking-tight">
-                  Safe, Easy, On-Demand
-                </h3>
-                <p className="text-white/70 text-sm mt-1 leading-relaxed">
-                  Digital solutions anytime
-                </p>
+              <div className="lg-dark absolute inset-x-3 bottom-3 rounded-[20px] p-4 flex items-center gap-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-semibold text-white leading-snug tracking-tight">
+                    Safe, Easy, On-Demand
+                  </h3>
+                  <p className="text-white/75 text-sm mt-1 leading-relaxed">
+                    Digital solutions anytime
+                  </p>
+                </div>
+                <HeroArrow />
               </div>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="absolute bottom-6 right-5 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md border border-slate-200/50 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 text-slate-800 group-hover:text-white transition-colors" />
-              </motion.button>
-            </div>
+            </Link>
           </motion.div>
         </div>
       </div>

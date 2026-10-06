@@ -1,7 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { Providers } from '@/components/providers'
+import { AmbientBackground } from '@/components/layout/ambient-background'
+import { ScrollProgress } from '@/components/layout/scroll-progress'
+import { MobileTabBar } from '@/components/layout/mobile-tab-bar'
 import '@/styles/globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -19,7 +23,15 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
+// Tints the Safari / Chrome mobile toolbar to match the page
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#f6f6f2',
+}
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://pixelscraft.online'),
   title: 'PixelCraft — Building Real World Websites, Apps & AI Agents',
   description:
     'PixelCraft is a boutique digital studio crafting beautiful websites, mobile apps, automation solutions, and AI agents. Every pixel, crafted with purpose.',
@@ -62,11 +74,24 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased bg-[#f5f5f0]">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Hide the intro preloader before first paint if it already played this session */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{if(sessionStorage.getItem('preloaderShown')==='true')document.documentElement.setAttribute('data-preloader-shown','')}catch(e){}",
+          }}
+        />
+      </head>
+      <body className="font-sans antialiased bg-[#f6f6f2] text-slate-900">
+        <Providers>
+          <AmbientBackground />
+          <ScrollProgress />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <MobileTabBar />
+        </Providers>
       </body>
     </html>
   )

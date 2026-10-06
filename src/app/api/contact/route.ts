@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Escape visitor input before it goes into the HTML email
+function escapeHtml(value: unknown) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 export async function POST(request: NextRequest) {
   try {
+    // Created per request so a missing key fails this request instead of the whole build
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const body = await request.json()
     const { name, email, projectType, budget, message } = body
 
@@ -26,13 +36,13 @@ export async function POST(request: NextRequest) {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #4f46e5;">New Contact Form Submission</h2>
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Project Type:</strong> ${projectType || 'Not specified'}</p>
-            <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
+            <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Project Type:</strong> ${escapeHtml(projectType || 'Not specified')}</p>
+            <p><strong>Budget:</strong> ${escapeHtml(budget || 'Not specified')}</p>
           </div>
           <h3>Message:</h3>
-          <p style="background: #f1f5f9; padding: 15px; border-radius: 8px;">${message}</p>
+          <p style="background: #f1f5f9; padding: 15px; border-radius: 8px; white-space: pre-wrap;">${escapeHtml(message)}</p>
         </div>
       `,
     })

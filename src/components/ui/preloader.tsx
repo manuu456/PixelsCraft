@@ -7,14 +7,18 @@ interface PreloaderProps {
   onComplete?: () => void
 }
 
-export function Preloader({ onComplete }: PreloaderProps) {
-  // Check if already shown this session
-  const [hasShown, setHasShown] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('preloaderShown') === 'true'
-    }
+function alreadyShownThisSession() {
+  try {
+    return sessionStorage.getItem('preloaderShown') === 'true'
+  } catch {
     return false
-  })
+  }
+}
+
+export function Preloader({ onComplete }: PreloaderProps) {
+  // Starts false on both server and client so hydration matches; repeat visits are hidden
+  // before paint by the inline script in the root layout (html[data-preloader-shown]).
+  const [hasShown, setHasShown] = useState(false)
 
   const [percentage, setPercentage] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
@@ -23,6 +27,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
   useEffect(() => {
     // Skip animation if already shown
     if (hasShown) return
+    if (alreadyShownThisSession()) {
+      setHasShown(true)
+      return
+    }
 
     const duration = 1000 // 1 second
     const intervalTime = 25 // Update every 25ms for smooth animation
@@ -59,8 +67,12 @@ export function Preloader({ onComplete }: PreloaderProps) {
   if (hasShown) return null
 
   const handleExitComplete = () => {
-    if (typeof window !== 'undefined') {
+    // Also flag <html> so returning to Home via client-side navigation never flashes it again
+    document.documentElement.setAttribute('data-preloader-shown', '')
+    try {
       sessionStorage.setItem('preloaderShown', 'true')
+    } catch {
+      // storage unavailable (private mode) — preloader simply shows again next time
     }
     setShouldRender(false)
     onComplete?.()
@@ -72,7 +84,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
     <AnimatePresence onExitComplete={handleExitComplete}>
       {!isComplete && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-white"
+          data-preloader
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#f6f6f2] overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
@@ -83,7 +96,14 @@ export function Preloader({ onComplete }: PreloaderProps) {
             ease: 'easeInOut' 
           }}
         >
-          <div className="flex flex-col items-center gap-6">
+          {/* Aurora behind the glass card */}
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-[10%] left-[15%] w-[28rem] h-[28rem] rounded-full animate-aurora-1" style={{ background: 'radial-gradient(closest-side, rgba(129,140,248,0.45), transparent)' }} />
+            <div className="absolute bottom-[5%] right-[10%] w-[26rem] h-[26rem] rounded-full animate-aurora-2" style={{ background: 'radial-gradient(closest-side, rgba(192,132,252,0.35), transparent)' }} />
+            <div className="absolute top-1/2 left-1/2 w-72 h-72 rounded-full animate-aurora-3" style={{ background: 'radial-gradient(closest-side, rgba(56,189,248,0.25), transparent)' }} />
+          </div>
+
+          <div className="lg-panel relative flex flex-col items-center gap-6 rounded-[36px] px-12 py-10">
             {/* PixelCraft Logo - Stylized "P" */}
             <motion.div
               className="relative"
@@ -140,7 +160,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               <motion.span
-                className="text-5xl font-bold tabular-nums text-indigo-500"
+                className="text-5xl font-bold tabular-nums text-brand-gradient"
                 key={Math.floor(percentage)}
               >
                 {Math.floor(percentage)}
@@ -149,9 +169,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
             </motion.div>
 
             {/* Progress bar */}
-            <div className="h-1 w-48 overflow-hidden rounded-full bg-gray-200">
+            <div className="h-1.5 w-48 overflow-hidden rounded-full bg-slate-900/[0.07]">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-400"
                 initial={{ width: '0%' }}
                 animate={{ width: `${percentage}%` }}
                 transition={{ duration: 0.1, ease: 'linear' }}

@@ -103,7 +103,7 @@ export default function BlogPage() {
   const regularPosts = posts.filter((post) => !post.featured)
 
   return (
-    <div className="pt-28 bg-[#faf9f6] min-h-screen">
+    <div className="pt-28 min-h-screen">
       <Section>
         <SectionHeader
           label="Our Blog"
@@ -122,8 +122,8 @@ export default function BlogPage() {
               key={category}
               className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
                 category === 'All'
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'btn-glossy'
+                  : 'lg-chip text-slate-600 hover:text-indigo-600'
               }`}
             >
               {category}
@@ -148,13 +148,13 @@ export default function BlogPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-indigo-600 text-white rounded-full text-xs font-semibold">
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
                     Featured
                   </span>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="relative p-6">
                   <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
                     {post.category}
                   </span>
@@ -200,7 +200,7 @@ export default function BlogPage() {
                 </div>
 
                 {/* Content */}
-                <div className="p-5">
+                <div className="relative p-5">
                   <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
                     {post.category}
                   </span>

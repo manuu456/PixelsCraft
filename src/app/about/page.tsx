@@ -5,6 +5,8 @@ import { Sparkles, Lightbulb, Award, Users, TrendingUp, ArrowRight } from 'lucid
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useEffect, useState } from 'react'
+import { projects, liveProjects } from '@/lib/projects'
+import { trackSpotlight } from '@/lib/utils'
 
 // Animated counter hook
 function useCounter(end: number, duration: number = 2000, startOnView: boolean = true) {
@@ -74,44 +76,64 @@ const values = [
   },
 ]
 
-const team = [
+interface TeamMember {
+  name: string
+  initials: string
+  role: string
+  bio: string
+  /** Path under /public/team. If missing, a gradient initials tile is shown instead. */
+  photo?: string
+  /** Gradient for the initials tile */
+  gradient: string
+}
+
+const team: TeamMember[] = [
   {
     name: 'D Manoj Bharadwaj',
+    initials: 'MB',
+    photo: '/team/manoj.jpg',
     role: 'Gen AI Developer & Full Stack Engineer',
     bio: 'Passionate about building AI-powered experiences that feel magical. Combines deep learning expertise with full-stack development skills.',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80',
+    gradient: 'from-indigo-500 to-purple-600',
   },
   {
     name: 'R Kushal Kumar',
+    initials: 'KK',
+    photo: '/team/kushal.jpg',
     role: 'CTO & Security Engineer',
     bio: 'Thinks like an attacker so your systems stay secure. Leads technical strategy while ensuring rock-solid security foundations.',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80',
+    gradient: 'from-blue-500 to-indigo-600',
   },
   {
     name: 'Akhil Krishna Prasad',
+    initials: 'AK',
+    photo: '/team/akhil.jpg',
     role: 'Security Engineer & UI/UX Designer',
     bio: 'Where security meets beautiful design. Creates interfaces that are both stunning and unbreakable.',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80',
+    gradient: 'from-violet-500 to-fuchsia-600',
   },
   {
     name: 'Chakradhar Reddy',
+    initials: 'CR',
+    photo: '/team/chakradhar.jpg',
     role: 'Back End Engineer',
     bio: 'Architecting robust backends that scale effortlessly. Expert in building high-performance APIs and database systems.',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&q=80',
+    gradient: 'from-sky-500 to-indigo-600',
   },
 ]
 
+// Real numbers only — derived from the portfolio data so they stay accurate as projects are added
 const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 30, suffix: '+', label: 'Happy Clients' },
-  { value: 4, suffix: '', label: 'Team Members' },
-  { value: 100, suffix: '%', label: 'Client Satisfaction' },
+  { value: projects.length, suffix: '', label: 'Products Built' },
+  { value: liveProjects.length, suffix: '', label: 'Live in Production' },
+  { value: team.length, suffix: '', label: 'Core Team Members' },
+  { value: 2, suffix: '', label: 'App Platforms', hint: 'Android & iOS' },
 ]
 
 // Floating illustration components
 const FloatingIllustration1 = () => (
   <motion.div
-    className="absolute left-0 top-1/4 w-32 md:w-48 opacity-60"
+    className="absolute left-0 top-1/4 w-32 md:w-48 opacity-60 hidden md:block pointer-events-none"
     animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
     transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
   >
@@ -138,7 +160,7 @@ const FloatingIllustration1 = () => (
 
 const FloatingIllustration2 = () => (
   <motion.div
-    className="absolute right-0 top-1/3 w-32 md:w-44 opacity-60"
+    className="absolute right-0 top-1/3 w-32 md:w-44 opacity-60 hidden md:block pointer-events-none"
     animate={{ y: [0, 15, 0], rotate: [0, -3, 0] }}
     transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
   >
@@ -163,22 +185,24 @@ const FloatingIllustration2 = () => (
 )
 
 // Stat Card Component
-function StatCard({ value, suffix, label, index }: { value: number; suffix: string; label: string; index: number }) {
-  const { count, ref } = useCounter(value, 2000)
-  
+function StatCard({ value, suffix, label, hint, index }: { value: number; suffix: string; label: string; hint?: string; index: number }) {
+  const { count, ref } = useCounter(value, 1200)
+
   return (
     <motion.div
       ref={ref}
-      className="bg-white rounded-2xl p-8 text-center shadow-lg
-                 hover:shadow-xl transition-all duration-500"
+      className="lg-panel spotlight rounded-[28px] p-6 md:p-8 text-center flex flex-col justify-center
+                 transition-shadow duration-500 hover:[box-shadow:var(--lg-shadow-hover)]"
+      onPointerMove={trackSpotlight}
       variants={fadeUp}
       custom={index}
       whileHover={{ y: -5, transition: { duration: 0.3 } }}
     >
-      <p className="font-serif text-5xl md:text-6xl font-bold text-indigo-600 mb-3">
+      <p className="relative font-serif text-5xl md:text-6xl font-bold text-brand-gradient mb-3 lining-nums tabular-nums">
         {count}{suffix}
       </p>
       <p className="text-sm text-slate-600 tracking-wide uppercase">{label}</p>
+      {hint && <p className="text-xs text-slate-400 mt-1">{hint}</p>}
     </motion.div>
   )
 }
@@ -199,14 +223,14 @@ function ValueCard({ value, index }: { value: typeof values[0]; index: number })
   return (
     <motion.div
       className={`flex flex-col ${isReversed ? 'md:flex-row-reverse' : 'md:flex-row'} 
-                  bg-white rounded-3xl overflow-hidden group shadow-lg
-                  hover:shadow-xl transition-all duration-500`}
+                  lg-panel rounded-[32px] overflow-hidden group p-2
+                  transition-shadow duration-500 hover:[box-shadow:var(--lg-shadow-hover)]`}
       variants={fadeUp}
       custom={index}
       whileHover={{ y: -5 }}
     >
       {/* Image Side - 50% */}
-      <div className="relative w-full md:w-1/2 h-64 md:h-80 overflow-hidden">
+      <div className="relative w-full md:w-1/2 h-64 md:h-80 overflow-hidden rounded-[26px]">
         <Image
           src={value.image}
           alt={value.title}
@@ -218,7 +242,7 @@ function ValueCard({ value, index }: { value: typeof values[0]; index: number })
       
       {/* Text Side - 50% */}
       <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${colors.bg} mb-6`}>
+        <div className={`w-14 h-14 rounded-[16px] flex items-center justify-center ${colors.bg} mb-6 ring-1 ring-white shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_20px_-10px_rgba(79,70,229,0.4)]`}>
           <value.icon className={`w-7 h-7 ${colors.icon}`} />
         </div>
         <h3 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-4">
@@ -233,28 +257,41 @@ function ValueCard({ value, index }: { value: typeof values[0]; index: number })
 }
 
 // Team Member Card Component
-function TeamCard({ member, index }: { member: typeof team[0]; index: number }) {
+function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   return (
     <motion.div
-      className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden group
-                 shadow-lg hover:shadow-xl transition-all duration-500"
+      className="flex flex-row lg-panel rounded-[30px] overflow-hidden group p-2
+                 transition-shadow duration-500 hover:[box-shadow:var(--lg-shadow-hover)]"
       variants={fadeUp}
       custom={index}
       whileHover={{ y: -5 }}
     >
       {/* Photo Side */}
-      <div className="relative w-full sm:w-40 md:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden">
-        <Image
-          src={member.avatar}
-          alt={member.name}
-          fill
-          sizes="(max-width: 640px) 100vw, 200px"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+      <div className="relative w-28 sm:w-40 md:w-48 min-h-[11rem] flex-shrink-0 overflow-hidden rounded-[24px]">
+        {member.photo ? (
+          <Image
+            src={member.photo}
+            alt={member.name}
+            fill
+            sizes="(max-width: 640px) 112px, 200px"
+            className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+          />
+        ) : (
+          <div
+            className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${member.gradient}`}
+            role="img"
+            aria-label={member.name}
+          >
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,white_0%,transparent_55%)]" />
+            <span className="relative font-serif text-4xl sm:text-5xl font-bold text-white tracking-tight transition-transform duration-700 group-hover:scale-110">
+              {member.initials}
+            </span>
+          </div>
+        )}
       </div>
       
       {/* Info Side */}
-      <div className="p-6 md:p-8 flex flex-col justify-center">
+      <div className="p-5 sm:p-6 md:p-8 flex flex-col justify-center">
         <h4 className="font-serif text-xl md:text-2xl font-bold text-slate-900 mb-1">
           {member.name}
         </h4>
@@ -273,7 +310,7 @@ export default function AboutPage() {
   return (
     <div className="pt-20 overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex flex-col justify-center items-center px-6 md:px-12 py-24">
+      <section className="relative min-h-[54vh] md:min-h-[60vh] flex flex-col justify-center items-center px-6 md:px-12 pt-28 pb-6 md:pb-10">
         <FloatingIllustration1 />
         <FloatingIllustration2 />
         
@@ -284,9 +321,7 @@ export default function AboutPage() {
           variants={stagger}
         >
           <motion.div variants={fadeUp} className="mb-6">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                           bg-indigo-100 border border-indigo-200 
-                           text-indigo-600 text-sm font-medium">
+            <span className="lg-chip px-4 py-2 text-indigo-600 text-sm font-semibold">
               <Sparkles className="w-4 h-4" />
               About Us
             </span>
@@ -296,9 +331,9 @@ export default function AboutPage() {
             variants={fadeUp}
             className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-slate-900 mb-6 leading-[1.1]"
           >
-            About <span className="text-indigo-600 inline-flex items-center gap-3">
+            About <span className="inline-flex items-center gap-3 text-brand-gradient animate-sheen pr-1">
               PixelCraft
-              <Sparkles className="w-10 h-10 md:w-14 md:h-14 text-indigo-600" />
+              <Sparkles className="w-10 h-10 md:w-14 md:h-14 text-violet-500 drop-shadow-[0_6px_14px_rgba(139,92,246,0.45)]" />
             </span>
           </motion.h1>
           
@@ -338,9 +373,7 @@ export default function AboutPage() {
         >
           <motion.span 
             variants={fadeUp}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                       bg-indigo-100 border border-indigo-200 
-                       text-indigo-600 text-sm font-medium mb-6"
+            className="lg-chip px-4 py-2 text-indigo-600 text-sm font-semibold mb-6"
           >
             Our Values
           </motion.span>
@@ -348,7 +381,7 @@ export default function AboutPage() {
             variants={fadeUp}
             className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900"
           >
-            What <em className="text-indigo-600">Drives</em> Us
+            What <em className="text-brand-gradient pr-1">Drives</em> Us
           </motion.h2>
         </motion.div>
         
@@ -366,7 +399,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="px-6 md:px-12 lg:px-16 py-16 md:py-24">
+      <section id="team" className="px-6 md:px-12 lg:px-16 py-16 md:py-24">
         <motion.div
           className="text-center mb-16"
           initial="hidden"
@@ -376,9 +409,7 @@ export default function AboutPage() {
         >
           <motion.span 
             variants={fadeUp}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                       bg-indigo-100 border border-indigo-200 
-                       text-indigo-600 text-sm font-medium mb-6"
+            className="lg-chip px-4 py-2 text-indigo-600 text-sm font-semibold mb-6"
           >
             Meet the Makers
           </motion.span>
@@ -386,7 +417,7 @@ export default function AboutPage() {
             variants={fadeUp}
             className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4"
           >
-            The <em className="text-indigo-600">Team</em> Behind Every Pixel
+            The <em className="text-brand-gradient pr-1">Team</em> Behind Every Pixel
           </motion.h2>
           <motion.p 
             variants={fadeUp}
@@ -412,7 +443,7 @@ export default function AboutPage() {
       {/* Story Section - Full Width with Background */}
       <section className="px-6 md:px-12 lg:px-16 py-16 md:py-24">
         <motion.div
-          className="relative max-w-6xl mx-auto rounded-3xl overflow-hidden"
+          className="relative max-w-6xl mx-auto rounded-[36px] overflow-hidden ring-1 ring-black/5 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.6)]"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -434,8 +465,7 @@ export default function AboutPage() {
             <motion.span 
               variants={fadeUp}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                         bg-white/10 border border-white/20 
-                         text-white text-sm font-medium mb-6"
+                         lg-dark text-white text-sm font-medium mb-6"
             >
               Our Story
             </motion.span>
@@ -472,8 +502,7 @@ export default function AboutPage() {
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full 
-                           bg-indigo-600 text-white font-semibold
-                           hover:bg-indigo-700 transition-all duration-300
+                           btn-glossy font-semibold
                            group"
               >
                 Start a Project

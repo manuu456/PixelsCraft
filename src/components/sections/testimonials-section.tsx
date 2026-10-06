@@ -85,6 +85,8 @@ const textVariants = {
 export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(1)
+  // Pause autoplay while the visitor is reading / interacting with the card
+  const [isPaused, setIsPaused] = useState(false)
 
   const goToNext = useCallback(() => {
     setDirection(1)
@@ -96,16 +98,19 @@ export function TestimonialsSection() {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
   }, [])
 
-  // Auto-advance every 5 seconds
+  // Auto-advance every 5 seconds (paused on hover/touch and while the tab is hidden)
   useEffect(() => {
-    const interval = setInterval(goToNext, 5000)
+    if (isPaused) return
+    const interval = setInterval(() => {
+      if (!document.hidden) goToNext()
+    }, 5000)
     return () => clearInterval(interval)
-  }, [goToNext])
+  }, [goToNext, isPaused, currentIndex])
 
   const currentTestimonial = testimonials[currentIndex]
 
   return (
-    <Section id="testimonials" className="bg-white overflow-hidden">
+    <Section id="testimonials" fullHeight={false} className="overflow-hidden">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -114,7 +119,7 @@ export function TestimonialsSection() {
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <p className="text-[var(--text-secondary)] text-lg flex items-center justify-center gap-2">
+        <p className="lg-chip px-5 py-2.5 text-[var(--text-secondary)] text-base md:text-lg">
           <span className="text-[var(--accent)]">✦</span>
           People like you trust our service
           <span className="text-[var(--accent)]">✦</span>
@@ -131,9 +136,34 @@ export function TestimonialsSection() {
             initial={direction === 1 ? 'enterFromRight' : 'enterFromLeft'}
             animate="center"
             exit={direction === 1 ? 'exitToLeft' : 'exitToRight'}
-            className="bg-[#1e293b] rounded-3xl p-8 md:p-12"
+            // Swipe left/right to change testimonial (iOS-style)
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.35}
+            onDragStart={() => setIsPaused(true)}
+            onDragEnd={(_, info) => {
+              setIsPaused(false)
+              if (info.offset.x < -60 || info.velocity.x < -400) goToNext()
+              else if (info.offset.x > 60 || info.velocity.x > 400) goToPrev()
+            }}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="relative overflow-hidden rounded-[32px] p-8 md:p-12 cursor-grab active:cursor-grabbing touch-pan-y select-none bg-[#111a2e]/95 ring-1 ring-white/10 shadow-[0_40px_80px_-32px_rgba(15,23,42,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]"
           >
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            {/* Ambient light tinted by this testimonial's accent colours */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+              <div
+                className="absolute -top-24 -left-16 w-80 h-80 rounded-full opacity-40"
+                style={{ background: `radial-gradient(closest-side, ${currentTestimonial.accentColors[0]}, transparent)` }}
+              />
+              <div
+                className="absolute -bottom-28 right-0 w-96 h-96 rounded-full opacity-30"
+                style={{ background: `radial-gradient(closest-side, ${currentTestimonial.accentColors[1]}, transparent)` }}
+              />
+              <div className="absolute inset-0 bg-grid-dark opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+              <span className="absolute -bottom-16 md:-bottom-24 right-6 md:right-auto md:left-10 font-serif text-[9rem] md:text-[13rem] leading-none text-white/[0.07] select-none">&ldquo;</span>
+            </div>
+            <div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-12">
               {/* Photo with colored frames */}
               <div className="relative flex-shrink-0">
                 <div className="relative w-32 h-32 md:w-40 md:h-40">
@@ -150,7 +180,7 @@ export function TestimonialsSection() {
                     className="absolute inset-0 rounded-2xl overflow-hidden"
                     style={{ backgroundColor: currentTestimonial.accentColors[0] }}
                   >
-                    <div className="absolute inset-1 rounded-xl overflow-hidden">
+                    <div className="absolute inset-1 rounded-xl overflow-hidden ring-1 ring-white/20">
                       <Image
                         src={currentTestimonial.avatar}
                         alt={currentTestimonial.name}
@@ -158,7 +188,8 @@ export function TestimonialsSection() {
                         sizes="(max-width: 768px) 128px, 160px"
                         placeholder="blur"
                         blurDataURL={BLUR_DATA_URL_DARK}
-                        className="object-cover"
+                        draggable={false}
+                        className="object-cover pointer-events-none"
                       />
                     </div>
                   </div>
@@ -200,12 +231,12 @@ export function TestimonialsSection() {
             </div>
 
             {/* Navigation arrows */}
-            <div className="flex justify-center md:justify-end gap-3 mt-8">
+            <div className="relative flex justify-center md:justify-end gap-3 mt-8">
               <motion.button
                 onClick={goToPrev}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center text-white/70 hover:border-white hover:text-white transition-colors duration-200"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white/80 bg-white/10 backdrop-blur-md ring-1 ring-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] hover:bg-white/20 hover:text-white transition-colors duration-200"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -214,7 +245,7 @@ export function TestimonialsSection() {
                 onClick={goToNext}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center text-white/70 hover:border-white hover:text-white transition-colors duration-200"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white/80 bg-white/10 backdrop-blur-md ring-1 ring-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] hover:bg-white/20 hover:text-white transition-colors duration-200"
                 aria-label="Next testimonial"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -222,7 +253,7 @@ export function TestimonialsSection() {
             </div>
 
             {/* Pagination dots */}
-            <div className="flex justify-center gap-2 mt-6">
+            <div className="relative flex justify-center gap-2 mt-6">
               {testimonials.map((_, index) => (
                 <button
                   key={index}

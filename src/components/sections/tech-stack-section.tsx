@@ -33,14 +33,14 @@ interface TechCardProps {
 
 function TechCard({ tech }: TechCardProps) {
   return (
-    <div className="flex-shrink-0 w-32 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div className="lg-lite flex-shrink-0 w-32 rounded-[22px] overflow-hidden transition-transform duration-300 hover:-translate-y-1">
       {/* Gradient top bar */}
-      <div className={`h-1 bg-gradient-to-r ${tech.gradient}`} />
+      <div className={`absolute top-0 inset-x-5 h-[3px] rounded-b-full bg-gradient-to-r ${tech.gradient}`} />
       
       {/* Content */}
       <div className="p-4 flex flex-col items-center justify-center">
         {/* Icon container */}
-        <div className={`w-14 h-14 mb-3 flex items-center justify-center ${tech.bg} rounded-xl p-2`}>
+        <div className={`w-14 h-14 mb-3 flex items-center justify-center ${tech.bg} rounded-[16px] p-2 ring-1 ring-black/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]`}>
           <img 
             src={tech.logo} 
             alt={tech.name}
@@ -59,7 +59,7 @@ export function TechStackSection() {
   const row2Items = [...techRow2, ...techRow2, ...techRow2]
 
   return (
-    <section className="bg-[#faf9f6] py-20 overflow-hidden">
+    <section className="relative py-20 overflow-hidden">
       <style jsx>{`
         @keyframes scroll-left {
           from { transform: translateX(0); }
@@ -89,17 +89,15 @@ export function TechStackSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 max-w-3xl mx-auto leading-tight">
+          <span className="section-label">Our Stack</span>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 max-w-3xl mx-auto leading-tight">
             We leverage cutting-edge technologies to build scalable, modern solutions.
           </h2>
         </motion.div>
       </div>
 
-      {/* Carousel Container */}
-      <div className="relative">
-        {/* Gradient fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#faf9f6] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#faf9f6] to-transparent z-10 pointer-events-none" />
+      {/* Carousel Container — edges fade out via mask, so it blends with any background */}
+      <div className="relative mask-fade-x py-2">
 
         {/* Row 1 - Scrolling Left */}
         <div className="mb-4">

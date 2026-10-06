@@ -64,6 +64,12 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  /* Anchor links (/services#apps, /about#team…) land below the fixed navbar */
+  scroll-padding-top: 88px;
+  /* Native-app feel on iOS/Android: no grey tap flash, no font inflation in landscape */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -214,45 +220,52 @@ body::after {
     box-shadow: var(--shadow-md);
   }
 
-  /* Primary button — Indigo/Purple */
+  /* Primary button — glossy indigo pill (v2) */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2;
     position: relative;
-    background: var(--accent);
     color: white;
     border: none;
     border-radius: 980px;
-    padding: 12px 24px;
+    padding: 13px 26px;
     font-family: inherit;
     font-size: 0.9375rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.01em;
     cursor: pointer;
     text-decoration: none;
+    background: linear-gradient(180deg, #7b7ef8 0%, #6366f1 48%, #4f46e5 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+      0 10px 24px -10px rgba(79, 70, 229, 0.7);
     transition: all 0.3s var(--ease-mendx);
   }
 
   .btn-primary:hover {
-    background: var(--accent-hover);
-    transform: scale(1.02);
+    filter: brightness(1.06);
+    transform: translateY(-1px);
   }
 
   .btn-primary:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
   }
 
-  /* Secondary button — outlined */
+  /* Secondary button — frosted glass pill (v2) */
   .btn-glass {
     @apply inline-flex items-center justify-center gap-2;
     position: relative;
-    background: transparent;
-    border: 1px solid var(--border-medium);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 6px 18px -8px rgba(30, 27, 75, 0.25);
     border-radius: 980px;
-    padding: 12px 24px;
+    padding: 13px 26px;
     font-family: inherit;
     font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--accent);
+    font-weight: 600;
+    color: var(--accent-hover);
     letter-spacing: -0.01em;
     cursor: pointer;
     text-decoration: none;
@@ -260,19 +273,41 @@ body::after {
   }
 
   .btn-glass:hover {
-    background: var(--bg-secondary);
-    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 10px 24px -10px rgba(30, 27, 75, 0.3);
   }
 
-  /* Section label — subtle badge */
+  .btn-glass:active {
+    transform: scale(0.97);
+  }
+
+  /* Section label — frosted glass pill (v2) */
   .section-label {
-    display: inline-block;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--accent-hover);
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px -6px rgba(79, 70, 229, 0.25);
+  }
+
+  .section-label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   }
 
   /* Section title — Mendx style */
@@ -287,8 +322,10 @@ body::after {
   }
 
   .section-title em {
-    font-style: normal;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    font-style: italic;
+    /* room for the italic overhang so gradient-clipped glyphs aren't cut off */
+    padding: 0 0.12em 0.06em 0.02em;
+    background: var(--brand-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -404,6 +441,244 @@ img {
 /* Counter animation utility */
 .animate-counter {
   animation: counter 2s ease-out forwards;
+}
+
+/* ==========================================================================
+   v2 — "Liquid Glass" design layer
+   Frosted, light-catching surfaces inspired by iOS. Utilities are defined in
+   @layer components so Tailwind utilities (fixed, absolute, rounded…) still win.
+   ========================================================================== */
+:root {
+  --lg-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.5) 100%);
+  --lg-fill-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.74) 100%);
+  --lg-stroke: rgba(255, 255, 255, 0.75);
+  --lg-blur: blur(22px) saturate(180%);
+  --lg-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.3),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 14px 36px -14px rgba(30, 27, 75, 0.2);
+  --lg-shadow-hover:
+    inset 0 1px 0 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.3),
+    0 2px 4px rgba(15, 23, 42, 0.04),
+    0 26px 50px -18px rgba(49, 46, 129, 0.3);
+  --brand-gradient: linear-gradient(120deg, #4f46e5 0%, #7c3aed 45%, #0ea5e9 100%);
+}
+
+@layer components {
+  /* Frosted panel — the core material */
+  .lg-panel {
+    position: relative;
+    background: var(--lg-fill);
+    -webkit-backdrop-filter: var(--lg-blur);
+    backdrop-filter: var(--lg-blur);
+    border: 1px solid var(--lg-stroke);
+    box-shadow: var(--lg-shadow);
+  }
+
+  /* Specular rim: bright top-left and bottom-right edges, like light catching glass */
+  .lg-panel::before,
+  .lg-rim::before {
+    content: '';
+    position: absolute;
+    /* inset 0 (not -1px) so the rim survives overflow:hidden on cards */
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0) 38%,
+      rgba(255, 255, 255, 0) 62%,
+      rgba(255, 255, 255, 0.55) 100%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .lg-strong {
+    background: var(--lg-fill-strong);
+  }
+
+  /* Cheap glass for repeated items (no backdrop blur — safe for long marquees on phones) */
+  .lg-lite {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: var(--lg-shadow);
+  }
+
+  /* Glass for dark surfaces / over photos */
+  .lg-dark {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 18px 40px -20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Small frosted pill (section labels, badges, chips) */
+  .lg-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px -6px rgba(79, 70, 229, 0.25);
+  }
+
+  /* Glossy primary button — gradient with a soft top highlight */
+  .btn-glossy {
+    position: relative;
+    isolation: isolate;
+    color: #fff;
+    background: linear-gradient(180deg, #7b7ef8 0%, #6366f1 48%, #4f46e5 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+      0 10px 24px -10px rgba(79, 70, 229, 0.7),
+      0 2px 6px -2px rgba(79, 70, 229, 0.4);
+    transition: transform 0.25s var(--ease-mendx), box-shadow 0.25s var(--ease-mendx), filter 0.25s;
+  }
+
+  .btn-glossy:hover {
+    filter: brightness(1.06);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+      0 16px 32px -12px rgba(79, 70, 229, 0.75),
+      0 3px 8px -2px rgba(79, 70, 229, 0.45);
+  }
+
+  .btn-glossy:active {
+    transform: scale(0.97);
+  }
+
+  /* Brand gradient text */
+  .text-brand-gradient {
+    background: var(--brand-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .text-brand-gradient.animate-sheen {
+    animation: sheen 6s ease-in-out infinite;
+  }
+
+  /* Cursor-following light on cards (desktop). JS sets --spot-x / --spot-y. */
+  .spotlight {
+    --spot-x: 50%;
+    --spot-y: 50%;
+  }
+
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--spot-x) var(--spot-y), rgba(129, 140, 248, 0.16), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .spotlight:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* Hairline grid used behind dark sections */
+  .bg-grid-dark {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Edge fade for horizontal marquees (works on any background) */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+}
+
+/* Ambient "aurora" wallpaper that the glass blurs. Pure gradients + transforms (GPU-cheap). */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6vw, 4vh, 0) scale(1.08); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50% { transform: translate3d(-5vw, 6vh, 0) scale(0.95); }
+}
+
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4vw, -5vh, 0) scale(1.1); }
+}
+
+@keyframes sheen {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+.animate-aurora-1 { animation: aurora-drift-1 22s ease-in-out infinite; }
+.animate-aurora-2 { animation: aurora-drift-2 28s ease-in-out infinite; }
+.animate-aurora-3 { animation: aurora-drift-3 25s ease-in-out infinite; }
+
+/* Film grain — adds a tactile, premium finish to large flat areas */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Browsers without backdrop-filter get a solid, readable fallback */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .lg-panel,
+  .lg-chip {
+    background: rgba(255, 255, 255, 0.94);
+  }
+  .lg-dark {
+    background: rgba(15, 23, 42, 0.85);
+  }
+}
+
+/* Preloader already played this session (flag set by an inline script in the root layout) */
+html[data-preloader-shown] [data-preloader] {
+  display: none !important;
+}
+
+/* Respect the OS "Reduce Motion" setting for CSS animations (marquees, spinners, pulses) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Hide scrollbar utility */

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Globe, Smartphone, Zap, Bot, Palette, Shield, Cloud, GitBranch, LucideIcon, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { SegmentedControl } from '@/components/ui'
 
 type TabId = 'popular' | 'skills' | 'trending'
 
@@ -12,6 +14,8 @@ interface ServiceItem {
   title: string
   description: string
   image: string
+  /** Where tapping the card goes; defaults to the services page */
+  href?: string
 }
 
 interface TabConfig {
@@ -40,18 +44,21 @@ const servicesData: Record<TabId, ServiceItem[]> = {
       title: 'Web Development',
       description: 'Custom websites built with Next.js, React & modern tech. Fast, SEO-optimized.',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=90',
+      href: '/services#websites',
     },
     {
       icon: Smartphone,
       title: 'Mobile Apps',
       description: 'Native and cross-platform apps for iOS and Android with smooth performance.',
       image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&q=90',
+      href: '/services#apps',
     },
     {
       icon: Bot,
       title: 'AI Solutions',
       description: 'Intelligent AI solutions powered by GPT-4, Claude & cutting-edge LLMs.',
       image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&q=90',
+      href: '/services#ai-agents',
     },
     {
       icon: Zap,
@@ -234,30 +241,53 @@ function ServiceCard({ service, colorIndex, isHovered, onHover, onLeave }: Servi
   return (
     <motion.div
       variants={cardVariants}
-      className="rounded-2xl min-h-[280px] flex flex-row overflow-hidden cursor-pointer"
-      style={{ 
+      className="relative rounded-[28px] min-h-[200px] lg:min-h-[280px] flex flex-row overflow-hidden cursor-pointer shadow-[0_24px_48px_-26px_rgba(15,23,42,0.55)]"
+      style={{
         backgroundColor: color.bg,
+        backgroundImage: `radial-gradient(120% 90% at 100% 0%, rgba(255,255,255,${color.textLight ? 0.16 : 0.45}) 0%, transparent 55%)`,
         flex: isHovered ? 2 : 1,
         transition: 'flex 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
       }}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       whileHover={{ scale: 1.02, y: -4 }}
+      whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Fixed-width left content - never changes size */}
-      <div className="w-56 flex-shrink-0 p-6 flex flex-col justify-between">
+      {/* Glass rim + top sheen */}
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-inset ${color.textLight ? 'ring-white/15' : 'ring-white/50'} shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]`}
+      />
+      <Link
+        href={service.href ?? '/services'}
+        className="relative flex flex-row flex-1 min-w-0 rounded-[28px] focus-visible:outline-offset-[-4px]"
+        aria-label={`${service.title} — learn more`}
+      >
+      {/* Left content - fixed width on desktop so the hover image can expand beside it */}
+      <div className="w-full lg:w-56 flex-shrink-0 p-6 flex flex-col justify-between gap-8">
         {/* Icon container */}
-        <div 
-          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-            color.textLight ? 'bg-white/20' : 'bg-black/10'
-          }`}
-        >
-          <Icon 
-            className={`w-6 h-6 ${color.textLight ? 'text-white' : 'text-gray-800'}`} 
-          />
+        <div className="flex items-center justify-between">
+          <div
+            className={`w-12 h-12 rounded-[14px] flex items-center justify-center backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] ring-1 ${
+              color.textLight ? 'bg-white/15 ring-white/25' : 'bg-white/40 ring-white/60'
+            }`}
+          >
+            <Icon
+              className={`w-6 h-6 ${color.textLight ? 'text-white' : 'text-gray-800'}`}
+            />
+          </div>
+          {/* Tap affordance on touch screens (desktop shows the hover image instead) */}
+          <span
+            aria-hidden="true"
+            className={`lg:hidden w-9 h-9 rounded-full flex items-center justify-center ring-1 ${
+              color.textLight ? 'bg-white/15 ring-white/25' : 'bg-white/45 ring-white/60'
+            }`}
+          >
+            <ArrowRight className={`w-4 h-4 -rotate-45 ${color.textLight ? 'text-white' : 'text-gray-800'}`} />
+          </span>
         </div>
-        
+
         {/* Title & Description */}
         <div className="space-y-3">
           <h3 
@@ -277,7 +307,7 @@ function ServiceCard({ service, colorIndex, isHovered, onHover, onLeave }: Servi
         </div>
       </div>
 
-      {/* Image area - expands to fill remaining space */}
+      {/* Image area - expands to fill remaining space (desktop hover only) */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
@@ -285,20 +315,21 @@ function ServiceCard({ service, colorIndex, isHovered, onHover, onLeave }: Servi
             animate={{ opacity: 1, width: 'auto' }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex-1 p-4 flex items-center justify-center"
+            className="hidden lg:flex flex-1 p-4 items-center justify-center"
           >
             <div className="relative w-full h-48 md:h-56">
               <Image
                 src={service.image}
                 alt={service.title}
                 fill
-                className="rounded-xl object-cover shadow-2xl"
+                className="rounded-[20px] object-cover shadow-2xl ring-1 ring-white/30"
                 sizes="(max-width: 768px) 160px, 192px"
               />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+      </Link>
     </motion.div>
   )
 }
@@ -311,7 +342,7 @@ export function ServicesSection() {
   const currentServices = servicesData[activeTab].slice(0, 3)
 
   return (
-    <section id="services" className="bg-[#f5f5f0] py-20 px-4 md:px-8">
+    <section id="services" className="relative py-20 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div
@@ -326,22 +357,17 @@ export function ServicesSection() {
             {/* Left side: Tabs and Title */}
             <div className="space-y-4">
               {/* Pill Tabs */}
-              <div className="flex items-center gap-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                      activeTab === tab.id
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-white/60 text-gray-600 hover:bg-white hover:text-gray-900'
-                    }`}
-                    data-testid={`services-tab-${tab.id}`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+              <SegmentedControl
+                className="justify-start"
+                tone="dark"
+                ariaLabel="Service categories"
+                options={tabs.map((tab) => ({ value: tab.id, label: tab.label }))}
+                value={activeTab}
+                onChange={(tab) => {
+                  setActiveTab(tab)
+                  setHoveredIndex(null)
+                }}
+              />
               
               {/* Large Title */}
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-md leading-tight">
@@ -355,10 +381,13 @@ export function ServicesSection() {
                 From concept to deployment, we build products that users love and businesses rely on. 
                 Explore our expertise across modern technologies.
               </p>
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors group">
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-full font-medium bg-gradient-to-b from-gray-700 to-gray-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_26px_-12px_rgba(0,0,0,0.7)] hover:brightness-125 active:scale-[0.97] transition-all group"
+              >
                 Explore Now
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </Link>
             </div>
           </div>
         </motion.div>

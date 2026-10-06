@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { MapPin, Mail, Phone, Send, CheckCircle, Sparkles, Globe } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MapPin, Mail, Phone, Send, CheckCircle, Sparkles, Globe, AlertCircle } from 'lucide-react'
 
 const contactInfo = [
   {
@@ -67,6 +67,18 @@ const projectTypes = [
   'Security Audit',
   'Other',
 ]
+
+// Links across the site arrive here as /contact?service=… or /contact?project=…
+function subjectFromService(service: string) {
+  const s = service.toLowerCase()
+  if (/secur/.test(s)) return 'Security Audit'
+  if (/\bai\b|agent|chat/.test(s)) return 'AI Agent / Chatbot'
+  if (/mobile|\bapps?\b/.test(s)) return 'Mobile App'
+  if (/automat/.test(s)) return 'Automation Solution'
+  if (/design|ui\/ux/.test(s)) return 'UI/UX Design'
+  if (/web/.test(s)) return 'Website Development'
+  return 'Other'
+}
 
 const easeOutExpo = [0.16, 1, 0.3, 1]
 
@@ -184,11 +196,34 @@ const FloatingIllustrationRight = () => (
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
   const [focusedField, setFocusedField] = useState<string | null>(null)
+  const subjectRef = useRef<HTMLSelectElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
+
+  // Pre-fill the form from the link the visitor clicked (e.g. "Get a quote for Mobile App Development")
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const service = params.get('service')
+    const project = params.get('project')
+    const message = params.get('message')
+
+    if (subjectRef.current && (service || project)) {
+      subjectRef.current.value = service ? subjectFromService(service) : 'Other'
+    }
+    if (messageRef.current && !messageRef.current.value) {
+      if (project) {
+        messageRef.current.value = `Hi PixelCraft, I'd like to know more about ${project}.`
+      } else if (message) {
+        messageRef.current.value = message
+      }
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(false)
 
     const formData = new FormData(e.currentTarget)
     const data = {
@@ -209,18 +244,18 @@ export default function ContactPage() {
       if (response.ok) {
         setIsSubmitted(true)
       } else {
-        alert('Failed to send message. Please try again or email us directly.')
+        setSubmitError(true)
       }
     } catch (error) {
       console.error('Error:', error)
-      alert('Failed to send message. Please try again or email us directly.')
+      setSubmitError(true)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-28 pb-20 overflow-hidden relative">
+    <div className="min-h-screen pt-28 pb-20 overflow-hidden relative">
       {/* Background ambient elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-indigo-100/50 rounded-full blur-3xl" />
@@ -241,7 +276,7 @@ export default function ContactPage() {
           }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-6"
+            className="lg-chip px-4 py-2 mb-6"
             variants={fadeUpVariants}
             custom={0}
           >
@@ -254,7 +289,7 @@ export default function ContactPage() {
             variants={fadeUpVariants}
             custom={1}
           >
-            Get In <em className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">Touch</em>
+            Get In <em className="text-brand-gradient pr-2">Touch</em>
           </motion.h1>
 
           <motion.p
@@ -275,9 +310,9 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: easeOutExpo }}
           >
-            <div className="h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-50 rounded-3xl border border-indigo-100/50 overflow-hidden shadow-lg shadow-indigo-100/30">
+            <div className="h-full lg-panel rounded-[32px] overflow-hidden p-2">
               {/* Illustration Section - 30% */}
-              <div className="h-[140px] relative bg-gradient-to-br from-indigo-100/50 to-purple-100/50 p-4">
+              <div className="h-[140px] relative rounded-[24px] bg-gradient-to-br from-indigo-100/70 via-violet-50/60 to-sky-100/60 ring-1 ring-white/80 p-4">
                 <ContactIllustration />
               </div>
 
@@ -285,7 +320,7 @@ export default function ContactPage() {
               <div className="p-6 md:p-8">
                 <h3 className="font-serif text-2xl font-semibold text-gray-900 mb-2">
                   Let&apos;s create something{' '}
-                  <em className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">amazing</em>
+                  <em className="text-brand-gradient pr-1">amazing</em>
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed mb-8">
                   We&apos;re a passionate team ready to bring your ideas to life. Reach out through any channel below.
@@ -305,7 +340,7 @@ export default function ContactPage() {
                       transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                       whileHover={{ x: 4 }}
                     >
-                      <div className={`w-11 h-11 rounded-full ${item.color} flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-200/50 group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-11 h-11 rounded-[14px] ${item.color} flex items-center justify-center flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_18px_-8px_rgba(99,102,241,0.7)] group-hover:scale-110 transition-transform duration-300`}>
                         <item.icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
@@ -321,7 +356,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Social Links */}
-                <div className="pt-6 border-t border-indigo-100">
+                <div className="pt-6 border-t border-slate-900/[0.06]">
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-4">
                     Connect With Us
                   </p>
@@ -330,7 +365,7 @@ export default function ContactPage() {
                       <motion.a
                         key={social.name}
                         href="#"
-                        className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600 hover:bg-indigo-500 hover:text-white hover:border-indigo-500 transition-all duration-300 shadow-sm"
+                        className="w-11 h-11 rounded-full bg-white/80 ring-1 ring-white shadow-[inset_0_1px_0_rgba(255,255,255,1),0_6px_14px_-8px_rgba(30,27,75,0.35)] flex items-center justify-center text-sm font-semibold text-gray-600 hover:bg-indigo-500 hover:text-white transition-all duration-300"
                         whileHover={{ scale: 1.15, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         initial={{ opacity: 0, y: 20 }}
@@ -353,7 +388,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: easeOutExpo }}
           >
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 p-6 md:p-10">
+            <div className="lg-panel lg-strong rounded-[32px] p-6 md:p-10">
               {isSubmitted ? (
                 <motion.div
                   className="text-center py-16"
@@ -393,13 +428,15 @@ export default function ContactPage() {
                       type="text"
                       name="name"
                       required
+                      autoComplete="name"
+                      enterKeyHint="next"
                       placeholder="Name"
                       onFocus={() => setFocusedField('name')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-2xl bg-gray-50 border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
                         focusedField === 'name'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
-                          : 'border-gray-100 hover:border-gray-200'
+                          : 'border-transparent hover:bg-slate-900/[0.06]'
                       }`}
                     />
                   </div>
@@ -413,13 +450,16 @@ export default function ContactPage() {
                       type="email"
                       name="email"
                       required
+                      autoComplete="email"
+                      inputMode="email"
+                      enterKeyHint="next"
                       placeholder="Email"
                       onFocus={() => setFocusedField('email')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-2xl bg-gray-50 border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
                         focusedField === 'email'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
-                          : 'border-gray-100 hover:border-gray-200'
+                          : 'border-transparent hover:bg-slate-900/[0.06]'
                       }`}
                     />
                   </div>
@@ -430,14 +470,15 @@ export default function ContactPage() {
                       Subject
                     </label>
                     <select
+                      ref={subjectRef}
                       name="projectType"
                       required
                       onFocus={() => setFocusedField('subject')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-2xl bg-gray-50 border-2 text-gray-900 focus:outline-none transition-all duration-300 appearance-none cursor-pointer ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 focus:outline-none transition-all duration-300 appearance-none cursor-pointer ${
                         focusedField === 'subject'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
-                          : 'border-gray-100 hover:border-gray-200'
+                          : 'border-transparent hover:bg-slate-900/[0.06]'
                       }`}
                       style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
@@ -461,25 +502,48 @@ export default function ContactPage() {
                       Message
                     </label>
                     <textarea
+                      ref={messageRef}
                       name="message"
                       required
                       rows={5}
                       placeholder="Message"
                       onFocus={() => setFocusedField('message')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-2xl bg-gray-50 border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 resize-none ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 resize-none ${
                         focusedField === 'message'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
-                          : 'border-gray-100 hover:border-gray-200'
+                          : 'border-transparent hover:bg-slate-900/[0.06]'
                       }`}
                     />
                   </div>
+
+                  {/* Inline error (replaces the old browser alert) */}
+                  <AnimatePresence>
+                    {submitError && (
+                      <motion.div
+                        role="alert"
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        className="flex items-start gap-3 p-4 rounded-2xl bg-rose-50 border border-rose-100 text-sm text-rose-700"
+                      >
+                        <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <p>
+                          We couldn&apos;t send your message just now. Please try again, or email us at{' '}
+                          <a href="mailto:contact@pixelscraft.online" className="font-medium underline">
+                            contact@pixelscraft.online
+                          </a>
+                          .
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-lg flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-indigo-200/50 hover:shadow-xl hover:shadow-indigo-300/50 transition-all duration-300"
+                    className="btn-glossy w-full py-4 rounded-[18px] font-semibold text-lg flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.01, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -503,6 +567,7 @@ export default function ContactPage() {
 
         {/* FAQ Section */}
         <motion.div
+          id="faq"
           className="mb-20"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -510,7 +575,7 @@ export default function ContactPage() {
         >
           <div className="text-center mb-12">
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
-              Frequently Asked <em className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">Questions</em>
+              Frequently Asked <em className="text-brand-gradient pr-1">Questions</em>
             </h2>
             <p className="text-gray-600">Quick answers to common questions</p>
           </div>
@@ -519,21 +584,21 @@ export default function ContactPage() {
             {faqs.map((faq, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+                className="lg-panel rounded-[22px] overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
               >
                 <details className="group">
-                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <summary className="relative flex items-center justify-between p-5 md:p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                     <span className="font-medium text-gray-900">{faq.question}</span>
-                    <span className="ml-4 flex-shrink-0 text-indigo-500 group-open:rotate-180 transition-transform duration-200">
+                    <span className="ml-4 flex-shrink-0 w-8 h-8 rounded-full bg-white/80 ring-1 ring-indigo-100 flex items-center justify-center text-indigo-500 group-open:rotate-180 transition-transform duration-300">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </span>
                   </summary>
-                  <div className="px-6 pb-6 text-gray-600 leading-relaxed">
+                  <div className="relative px-5 md:px-6 pb-6 text-gray-600 leading-relaxed">
                     {faq.answer}
                   </div>
                 </details>
@@ -549,7 +614,7 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: easeOutExpo }}
         >
-          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 rounded-[32px] p-8 md:p-12 relative overflow-hidden ring-1 ring-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_30px_60px_-30px_rgba(79,70,229,0.7)]">
             {/* Decorative elements */}
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-4 left-10 w-20 h-20 border border-white/30 rounded-full" />
@@ -571,7 +636,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="mailto:contact@pixelscraft.online"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full text-indigo-600 font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/90 backdrop-blur-md rounded-full text-indigo-600 font-semibold ring-1 ring-white shadow-[inset_0_1px_0_rgba(255,255,255,1),0_10px_24px_-10px_rgba(30,27,75,0.5)] hover:bg-white active:scale-[0.97] transition-all"
                 >
                   <Mail className="w-5 h-5" />
                   contact@pixelscraft.online

@@ -23,8 +23,9 @@ export function Section({
     <motion.section
       id={id}
       className={cn(
-        'relative px-6 md:px-12 lg:px-16 py-24 md:py-32',
-        fullHeight && 'min-h-screen',
+        'relative px-5 sm:px-6 md:px-12 lg:px-16 py-16 md:py-28',
+        // Full-height only on large screens; on phones it just created big empty gaps
+        fullHeight && 'lg:min-h-screen',
         centered && 'flex flex-col justify-center items-center',
         className
       )}
