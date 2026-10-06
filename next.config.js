@@ -18,8 +18,6 @@ const nextConfig = {
   },
   // Enable React strict mode for better development experience
   reactStrictMode: true,
-  // Optimize performance
-  swcMinify: true,
 }
 
 module.exports = nextConfig

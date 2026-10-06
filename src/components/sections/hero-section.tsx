@@ -19,7 +19,7 @@ function HeroArrow() {
   return (
     <span
       aria-hidden="true"
-      className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_6px_14px_-6px_rgba(0,0,0,0.4)] transition-all duration-300 group-hover:bg-indigo-600 group-hover:scale-105"
+      className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_6px_14px_-6px_rgba(0,0,0,0.4)] transition-all duration-300 group-hover:bg-indigo-600 group-hover:scale-105"
     >
       <ArrowRight className="w-4 h-4 text-slate-800 group-hover:text-white group-hover:-rotate-45 transition-all duration-300" />
     </span>
@@ -48,19 +48,6 @@ const itemVariants = {
       ease: [0.16, 1, 0.3, 1],
     },
   },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 60 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      delay: 0.6 + i * 0.15,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  }),
 }
 
 const slideFromLeft = {
@@ -186,14 +173,6 @@ const PersonWithLaptopIllustration = () => (
 )
 
 // Service options
-const services = [
-  'Web Development',
-  'Mobile Apps',
-  'AI Solutions',
-  'UI/UX Design',
-  'Automation',
-]
-
 const serviceTypes = [
   'Web Development',
   'Mobile Apps',
@@ -318,7 +297,7 @@ export function HeroSection() {
                   href="/portfolio"
                   className="lg-chip group pl-1.5 pr-4 py-1.5 text-[13px] text-slate-700 hover:text-slate-900 transition-colors active:scale-[0.97]"
                 >
-                  <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
+                  <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white bg-linear-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
                     Latest
                   </span>
                   <span className="truncate max-w-[13rem] sm:max-w-none">
@@ -343,7 +322,7 @@ export function HeroSection() {
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute -bottom-1 left-0 right-0 h-3 -z-10 origin-left rounded-full bg-gradient-to-r from-indigo-200/70 via-violet-200/70 to-sky-200/70 blur-[2px]"
+                    className="absolute -bottom-1 left-0 right-0 h-3 -z-10 origin-left rounded-full bg-linear-to-r from-indigo-200/70 via-violet-200/70 to-sky-200/70 blur-[2px]"
                   />
                 </span>
                 {/* Inline Sparkle Icon */}
@@ -386,7 +365,7 @@ export function HeroSection() {
             >
               <div className="flex flex-col sm:flex-row gap-2">
                 {/* Service Type Dropdown */}
-                <div ref={dropdownRef} className="relative flex-shrink-0 sm:w-48">
+                <div ref={dropdownRef} className="relative shrink-0 sm:w-48">
                   <button
                     type="button"
                     onClick={() => setIsServiceTypeOpen(!isServiceTypeOpen)}
@@ -395,11 +374,11 @@ export function HeroSection() {
                     className="w-full flex items-center gap-2 px-4 py-3.5 bg-white/70 hover:bg-white active:bg-slate-100 ring-1 ring-black/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,1)] rounded-[16px] text-left transition-colors"
                     data-testid="hero-service-dropdown"
                   >
-                    <Briefcase className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                    <Briefcase className="w-4 h-4 text-slate-500 shrink-0" />
                     <span className={`text-sm truncate flex-1 ${selectedServiceType === 'Select Service' ? 'text-slate-500' : 'text-slate-800 font-medium'}`}>
                       {selectedServiceType}
                     </span>
-                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 flex-shrink-0 ${isServiceTypeOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 shrink-0 ${isServiceTypeOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   <AnimatePresence>
@@ -443,7 +422,7 @@ export function HeroSection() {
 
                 {/* Search Input */}
                 <label className="flex-1 flex items-center gap-2 px-4 py-3.5 cursor-text">
-                  <Search className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <Search className="w-4 h-4 text-slate-500 shrink-0" />
                   <span className="sr-only">What are you looking for?</span>
                   <input
                     type="search"
@@ -451,7 +430,7 @@ export function HeroSection() {
                     placeholder="What are you looking for?"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 min-w-0 bg-transparent text-slate-800 placeholder:text-slate-500 outline-none text-base sm:text-sm [&::-webkit-search-cancel-button]:hidden"
+                    className="flex-1 min-w-0 bg-transparent text-slate-800 placeholder:text-slate-500 outline-hidden text-base sm:text-sm [&::-webkit-search-cancel-button]:hidden"
                     data-testid="hero-search-input"
                   />
                 </label>
@@ -523,7 +502,7 @@ export function HeroSection() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/5 to-transparent" />
               <div className="absolute inset-0 bg-radial-gradient pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
               
               {/* Frosted caption bar */}
@@ -561,7 +540,7 @@ export function HeroSection() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/5 to-transparent" />
                 <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
                 
                 <div className="lg-dark absolute inset-x-3 bottom-3 rounded-[18px] py-2.5 pl-4 pr-2.5 flex items-center gap-3">
@@ -624,7 +603,7 @@ export function HeroSection() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 25vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/5 to-transparent" />
               <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)' }} />
               
               <div className="lg-dark absolute inset-x-3 bottom-3 rounded-[20px] p-4 flex items-center gap-3">

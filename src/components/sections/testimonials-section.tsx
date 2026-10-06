@@ -165,7 +165,7 @@ export function TestimonialsSection() {
             </div>
             <div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-12">
               {/* Photo with colored frames */}
-              <div className="relative flex-shrink-0">
+              <div className="relative shrink-0">
                 <div className="relative w-32 h-32 md:w-40 md:h-40">
                   {/* Stacked accent frames */}
                   <div

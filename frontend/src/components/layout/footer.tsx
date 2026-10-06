@@ -37,13 +37,13 @@ export function Footer() {
             </p>
             <div className="mt-6 space-y-3">
               <a href="https://maps.google.com/?q=Tirupati,Andhra+Pradesh,India" target="_blank" rel="noopener noreferrer" data-testid="footer-address-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
-                <MapPin className="w-4 h-4 text-gold flex-shrink-0" />Tirupati, Andhra Pradesh
+                <MapPin className="w-4 h-4 text-gold shrink-0" />Tirupati, Andhra Pradesh
               </a>
               <a href="mailto:contact@pixelscraft.online" data-testid="footer-email-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
-                <Mail className="w-4 h-4 text-gold flex-shrink-0" />contact@pixelscraft.online
+                <Mail className="w-4 h-4 text-gold shrink-0" />contact@pixelscraft.online
               </a>
               <a href="tel:+919391279070" data-testid="footer-phone-link" className="flex items-center gap-2.5 text-sm text-[#888] hover:text-gold transition-colors">
-                <Phone className="w-4 h-4 text-gold flex-shrink-0" />+91 93912 79070
+                <Phone className="w-4 h-4 text-gold shrink-0" />+91 93912 79070
               </a>
             </div>
           </div>

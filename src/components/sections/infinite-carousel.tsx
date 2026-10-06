@@ -25,7 +25,7 @@ const technologies: TechCard[] = [
 
 function TechCardItem({ tech }: { tech: TechCard }) {
   return (
-    <div className="flex-shrink-0 w-36 md:w-44 mx-3 md:mx-4">
+    <div className="shrink-0 w-36 md:w-44 mx-3 md:mx-4">
       <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
         {/* Colored header bar */}
         <div 
@@ -60,7 +60,7 @@ export function InfiniteCarousel() {
   return (
     <Section 
       id="technologies" 
-      className="bg-gradient-to-b from-amber-50 to-orange-50" 
+      className="bg-linear-to-b from-amber-50 to-orange-50"
       fullHeight={false}
     >
       <style jsx>{`
@@ -96,8 +96,8 @@ export function InfiniteCarousel() {
       {/* Carousel container - Row 1 */}
       <div className="w-full max-w-7xl overflow-hidden relative">
         {/* Gradient fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-amber-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-orange-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-linear-to-r from-amber-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-linear-to-l from-orange-50 to-transparent z-10 pointer-events-none" />
         
         {/* Scrolling track */}
         <div 
@@ -113,8 +113,8 @@ export function InfiniteCarousel() {
       {/* Carousel container - Row 2 (reverse direction) */}
       <div className="w-full max-w-7xl overflow-hidden relative mt-6">
         {/* Gradient fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-amber-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-orange-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-linear-to-r from-amber-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-linear-to-l from-orange-50 to-transparent z-10 pointer-events-none" />
         
         {/* Scrolling track - reverse direction */}
         <div 

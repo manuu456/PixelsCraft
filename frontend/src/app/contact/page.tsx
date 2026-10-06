@@ -45,7 +45,7 @@ export default function ContactPage() {
               <div className="space-y-6 mb-10">
                 {contactInfo.map((item) => (
                   <div key={item.label} className="flex items-start gap-4" data-testid={`contact-info-${item.label.toLowerCase()}`}>
-                    <item.icon className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
+                    <item.icon className="w-4 h-4 text-gold mt-0.5 shrink-0" />
                     <div>
                       <p className="text-[10px] text-[#555] uppercase tracking-[0.15em] font-semibold mb-1">{item.label}</p>
                       <p className="text-sm text-[#ededed]">{item.value}</p>
@@ -87,27 +87,27 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">First Name</label>
-                      <input type="text" required placeholder="Arjun" data-testid="contact-first-name" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors placeholder:text-[#333]" />
+                      <input type="text" required placeholder="Arjun" data-testid="contact-first-name" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors placeholder:text-[#333]" />
                     </div>
                     <div>
                       <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">Last Name</label>
-                      <input type="text" required placeholder="Sharma" data-testid="contact-last-name" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors placeholder:text-[#333]" />
+                      <input type="text" required placeholder="Sharma" data-testid="contact-last-name" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors placeholder:text-[#333]" />
                     </div>
                   </div>
                   <div>
                     <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">Email Address</label>
-                    <input type="email" required placeholder="arjun@company.com" data-testid="contact-email" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors placeholder:text-[#333]" />
+                    <input type="email" required placeholder="arjun@company.com" data-testid="contact-email" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors placeholder:text-[#333]" />
                   </div>
                   <div>
                     <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">Project Type</label>
-                    <select required data-testid="contact-project-type" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors">
+                    <select required data-testid="contact-project-type" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors">
                       <option value="" className="bg-[#0a0a0a]">Select a service...</option>
                       {projectTypes.map((t) => (<option key={t} value={t} className="bg-[#0a0a0a]">{t}</option>))}
                     </select>
                   </div>
                   <div>
                     <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">Budget Range (Optional)</label>
-                    <select data-testid="contact-budget" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors">
+                    <select data-testid="contact-budget" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors">
                       <option value="" className="bg-[#0a0a0a]">Select a range...</option>
                       <option value="<50k" className="bg-[#0a0a0a]">Less than &#8377;50,000</option>
                       <option value="50k-1L" className="bg-[#0a0a0a]">&#8377;50,000 - &#8377;1,00,000</option>
@@ -118,7 +118,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.15em] mb-2 block">Message</label>
-                    <textarea required rows={4} placeholder="Tell us about your project..." data-testid="contact-message" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-none focus:border-gold transition-colors resize-none placeholder:text-[#333]" />
+                    <textarea required rows={4} placeholder="Tell us about your project..." data-testid="contact-message" className="w-full bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] text-[#ededed] text-sm px-4 py-3 rounded-lg focus:outline-hidden focus:border-gold transition-colors resize-none placeholder:text-[#333]" />
                   </div>
                   <button
                     type="submit"

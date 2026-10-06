@@ -126,7 +126,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                   }}
                 />
                 {/* Logo container */}
-                <div className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
                   {/* Stylized "P" icon */}
                   <svg
                     viewBox="0 0 32 32"
@@ -171,7 +171,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
             {/* Progress bar */}
             <div className="h-1.5 w-48 overflow-hidden rounded-full bg-slate-900/[0.07]">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-400"
+                className="h-full rounded-full bg-linear-to-r from-indigo-500 via-violet-500 to-sky-400"
                 initial={{ width: '0%' }}
                 animate={{ width: `${percentage}%` }}
                 transition={{ duration: 0.1, ease: 'linear' }}

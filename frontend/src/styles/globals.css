@@ -1,8 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss" source("../");
+@config "../../tailwind.config.mts";
 
 :root {
   --bg: #000000;
@@ -17,7 +15,10 @@
   --text-3: #555555;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+}
 html { scroll-behavior: smooth; }
 
 body {
@@ -33,5 +34,3 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
 ::selection { background: rgba(201,162,39,0.2); color: var(--text); }
-
-a { text-decoration: none; color: inherit; }

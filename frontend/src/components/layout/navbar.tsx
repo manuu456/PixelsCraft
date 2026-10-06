@@ -38,7 +38,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 h-16 px-6 md:px-12 lg:px-20',
           'flex items-center justify-between transition-all duration-300',
-          scrolled ? 'bg-black/90 backdrop-blur-sm border-b border-[rgba(255,255,255,0.06)]' : 'bg-transparent'
+          scrolled ? 'bg-black/90 backdrop-blur-xs border-b border-[rgba(255,255,255,0.06)]' : 'bg-transparent'
         )}
       >
         <Link href="/" data-testid="nav-logo" className="text-lg font-bold tracking-tight text-[#ededed] hover:text-gold transition-colors">

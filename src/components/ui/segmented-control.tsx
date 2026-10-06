@@ -114,7 +114,7 @@ export function SegmentedControl<T extends string>({
                       'absolute inset-0 rounded-full',
                       tone === 'light'
                         ? 'bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_-4px_rgba(79,70,229,0.3)]'
-                        : 'bg-gradient-to-b from-gray-700 to-gray-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_6px_14px_-6px_rgba(0,0,0,0.5)]'
+                        : 'bg-linear-to-b from-gray-700 to-gray-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_6px_14px_-6px_rgba(0,0,0,0.5)]'
                     )}
                     transition={{ type: 'spring', stiffness: 500, damping: 38 }}
                   />

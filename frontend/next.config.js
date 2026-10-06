@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: { root: __dirname },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
@@ -10,7 +11,6 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
   reactStrictMode: true,
-  swcMinify: true,
   allowedDevOrigins: [
     'a290c679-1154-4b44-bcd1-029a6dd86e3f.cluster-0.preview.emergentcf.cloud',
     'web-craft-hub-12.cluster-0.preview.emergentcf.cloud',

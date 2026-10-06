@@ -43,7 +43,7 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
             </span>
             <span className="flex-1 flex justify-center min-w-0">
               <span className="inline-flex items-center gap-1.5 max-w-full px-3 py-0.5 rounded-full bg-slate-900/[0.05] text-[11px] text-slate-500 truncate">
-                <Lock className="w-2.5 h-2.5 flex-shrink-0" />
+                <Lock className="w-2.5 h-2.5 shrink-0" />
                 <span className="truncate">{hostname(project.url)}</span>
               </span>
             </span>
@@ -64,22 +64,22 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
               project.imagePosition === 'top' ? 'object-top' : 'object-center'
             )}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent" />
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
             {detailed && project.featured && (
-              <span className="px-2.5 py-1 text-[11px] font-semibold text-white rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_4px_10px_-4px_rgba(79,70,229,0.6)]">
+              <span className="px-2.5 py-1 text-[11px] font-semibold text-white rounded-full bg-linear-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_4px_10px_-4px_rgba(79,70,229,0.6)]">
                 Featured
               </span>
             )}
-            <span className="px-2.5 py-1 text-[11px] font-semibold text-slate-800 rounded-full bg-white/80 backdrop-blur-md ring-1 ring-white/80 shadow-sm">
+            <span className="px-2.5 py-1 text-[11px] font-semibold text-slate-800 rounded-full bg-white/80 backdrop-blur-md ring-1 ring-white/80 shadow-xs">
               {project.category}
             </span>
           </div>
 
           {isLive ? (
-            <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold text-slate-800 bg-white/85 backdrop-blur-md rounded-full ring-1 ring-white/80 shadow-sm">
+            <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold text-slate-800 bg-white/85 backdrop-blur-md rounded-full ring-1 ring-white/80 shadow-xs">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -87,7 +87,7 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
               Live
             </span>
           ) : (
-            <span className="absolute bottom-3 left-3 px-2.5 py-1 text-[11px] font-semibold text-slate-800 bg-white/85 backdrop-blur-md rounded-full ring-1 ring-white/80 shadow-sm">
+            <span className="absolute bottom-3 left-3 px-2.5 py-1 text-[11px] font-semibold text-slate-800 bg-white/85 backdrop-blur-md rounded-full ring-1 ring-white/80 shadow-xs">
               Coming Soon
             </span>
           )}

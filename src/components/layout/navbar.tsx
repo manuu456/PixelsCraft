@@ -20,7 +20,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
       <motion.div
         whileHover={{ rotate: 12, scale: 1.06 }}
         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-        className="relative flex items-center justify-center w-9 h-9 rounded-[11px] bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_6px_16px_-6px_rgba(99,102,241,0.7)]"
+        className="relative flex items-center justify-center w-9 h-9 rounded-[11px] bg-linear-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_6px_16px_-6px_rgba(99,102,241,0.7)]"
       >
         <Sparkles className="w-4 h-4 text-white" />
       </motion.div>

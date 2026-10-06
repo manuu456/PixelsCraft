@@ -60,7 +60,7 @@ export function CTASection() {
         <div className="absolute top-1/3 -right-32 w-[32rem] h-[32rem] rounded-full animate-aurora-2" style={{ background: 'radial-gradient(closest-side, rgba(168,85,247,0.28), transparent)' }} />
         <div className="absolute -bottom-48 left-1/3 w-[34rem] h-[34rem] rounded-full animate-aurora-3" style={{ background: 'radial-gradient(closest-side, rgba(14,165,233,0.22), transparent)' }} />
         <div className="absolute inset-0 bg-grid-dark [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_80%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
       </div>
 
       <div className="relative max-w-6xl mx-auto">
@@ -107,7 +107,7 @@ export function CTASection() {
 
               {/* Icon */}
               <div
-                className={`relative w-14 h-14 bg-gradient-to-br ${feature.color} rounded-[16px] flex items-center justify-center mb-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] group-hover:scale-110 transition-transform duration-300`}
+                className={`relative w-14 h-14 bg-linear-to-br ${feature.color} rounded-[16px] flex items-center justify-center mb-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] group-hover:scale-110 transition-transform duration-300`}
                 style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.4), 0 10px 28px -8px ${feature.glow}` }}
               >
                 <feature.icon className="w-7 h-7 text-white" />
@@ -142,7 +142,7 @@ export function CTASection() {
                 Tell us what you&apos;re building — websites, apps, AI or security — and we&apos;ll get back to you within 24 hours.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <Link href="/contact" className="btn-glossy group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold">
                 Start a Project
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

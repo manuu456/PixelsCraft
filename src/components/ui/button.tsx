@@ -48,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     )
 
     if ('href' in props && props.href) {
-      const { href, target, rel, ...rest } = props
+      const { href, target, rel } = props
       return (
         <Link
           ref={ref as React.Ref<HTMLAnchorElement>}
@@ -62,7 +62,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       )
     }
 
-    const { onClick, disabled, type, ...buttonRest } = props as ButtonAsButton
+    const { onClick, disabled, type } = props as ButtonAsButton
 
     return (
       <button

@@ -91,10 +91,10 @@ export default function ServicesPage() {
                     Get a quote <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 lg:w-[380px] flex-shrink-0">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 lg:w-[380px] shrink-0">
                   {service.features.map((f) => (
                     <div key={f} className="flex items-center gap-2 text-sm text-[#888]">
-                      <span className="w-1 h-1 bg-gold rounded-full flex-shrink-0" />
+                      <span className="w-1 h-1 bg-gold rounded-full shrink-0" />
                       {f}
                     </div>
                   ))}

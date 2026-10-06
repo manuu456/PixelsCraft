@@ -265,7 +265,7 @@ function ServiceCard({ service, colorIndex, isHovered, onHover, onLeave }: Servi
         aria-label={`${service.title} — learn more`}
       >
       {/* Left content - fixed width on desktop so the hover image can expand beside it */}
-      <div className="w-full lg:w-56 flex-shrink-0 p-6 flex flex-col justify-between gap-8">
+      <div className="w-full lg:w-56 shrink-0 p-6 flex flex-col justify-between gap-8">
         {/* Icon container */}
         <div className="flex items-center justify-between">
           <div
@@ -383,7 +383,7 @@ export function ServicesSection() {
               </p>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-full font-medium bg-gradient-to-b from-gray-700 to-gray-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_26px_-12px_rgba(0,0,0,0.7)] hover:brightness-125 active:scale-[0.97] transition-all group"
+                className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-full font-medium bg-linear-to-b from-gray-700 to-gray-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_26px_-12px_rgba(0,0,0,0.7)] hover:brightness-125 active:scale-[0.97] transition-all group"
               >
                 Explore Now
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

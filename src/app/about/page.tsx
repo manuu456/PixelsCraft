@@ -267,7 +267,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       whileHover={{ y: -5 }}
     >
       {/* Photo Side */}
-      <div className="relative w-28 sm:w-40 md:w-48 min-h-[11rem] flex-shrink-0 overflow-hidden rounded-[24px]">
+      <div className="relative w-28 sm:w-40 md:w-48 min-h-[11rem] shrink-0 overflow-hidden rounded-[24px]">
         {member.photo ? (
           <Image
             src={member.photo}
@@ -278,7 +278,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           />
         ) : (
           <div
-            className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${member.gradient}`}
+            className={`absolute inset-0 flex items-center justify-center bg-linear-to-br ${member.gradient}`}
             role="img"
             aria-label={member.name}
           >
@@ -457,7 +457,7 @@ export default function AboutPage() {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/60" />
+            <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/80 to-black/60" />
           </div>
           
           {/* Content */}

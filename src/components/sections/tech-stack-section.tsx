@@ -33,9 +33,9 @@ interface TechCardProps {
 
 function TechCard({ tech }: TechCardProps) {
   return (
-    <div className="lg-lite flex-shrink-0 w-32 rounded-[22px] overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+    <div className="lg-lite shrink-0 w-32 rounded-[22px] overflow-hidden transition-transform duration-300 hover:-translate-y-1">
       {/* Gradient top bar */}
-      <div className={`absolute top-0 inset-x-5 h-[3px] rounded-b-full bg-gradient-to-r ${tech.gradient}`} />
+      <div className={`absolute top-0 inset-x-5 h-[3px] rounded-b-full bg-linear-to-r ${tech.gradient}`} />
       
       {/* Content */}
       <div className="p-4 flex flex-col items-center justify-center">

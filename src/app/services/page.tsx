@@ -151,9 +151,9 @@ export default function ServicesPage() {
                   blurDataURL={BLUR_DATA_URL_DARK}
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/15 to-transparent" />
                 <div
-                  className={`absolute bottom-4 left-4 w-14 h-14 rounded-[16px] flex items-center justify-center bg-gradient-to-br ${service.gradient} text-white ring-1 ring-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-8px_rgba(79,70,229,0.7)]`}
+                  className={`absolute bottom-4 left-4 w-14 h-14 rounded-[16px] flex items-center justify-center bg-linear-to-br ${service.gradient} text-white ring-1 ring-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-8px_rgba(79,70,229,0.7)]`}
                 >
                   <service.icon className="w-7 h-7" />
                 </div>
@@ -178,7 +178,7 @@ export default function ServicesPage() {
                       key={feature}
                       className="flex items-start gap-2.5 text-sm text-slate-700"
                     >
-                      <span className="mt-0.5 w-4 h-4 rounded-full bg-indigo-500/10 ring-1 ring-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-indigo-500/10 ring-1 ring-indigo-500/20 flex items-center justify-center shrink-0">
                         <Check className="w-2.5 h-2.5 text-indigo-600" strokeWidth={3} />
                       </span>
                       {feature}

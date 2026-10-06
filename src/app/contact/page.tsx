@@ -312,7 +312,7 @@ export default function ContactPage() {
           >
             <div className="h-full lg-panel rounded-[32px] overflow-hidden p-2">
               {/* Illustration Section - 30% */}
-              <div className="h-[140px] relative rounded-[24px] bg-gradient-to-br from-indigo-100/70 via-violet-50/60 to-sky-100/60 ring-1 ring-white/80 p-4">
+              <div className="h-[140px] relative rounded-[24px] bg-linear-to-br from-indigo-100/70 via-violet-50/60 to-sky-100/60 ring-1 ring-white/80 p-4">
                 <ContactIllustration />
               </div>
 
@@ -340,7 +340,7 @@ export default function ContactPage() {
                       transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                       whileHover={{ x: 4 }}
                     >
-                      <div className={`w-11 h-11 rounded-[14px] ${item.color} flex items-center justify-center flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_18px_-8px_rgba(99,102,241,0.7)] group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-11 h-11 rounded-[14px] ${item.color} flex items-center justify-center shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_18px_-8px_rgba(99,102,241,0.7)] group-hover:scale-110 transition-transform duration-300`}>
                         <item.icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
@@ -397,7 +397,7 @@ export default function ContactPage() {
                   transition={{ duration: 0.5 }}
                 >
                   <motion.div
-                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-200"
+                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-200"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
@@ -427,13 +427,14 @@ export default function ContactPage() {
                     <input
                       type="text"
                       name="name"
+                      maxLength={120}
                       required
                       autoComplete="name"
                       enterKeyHint="next"
                       placeholder="Name"
                       onFocus={() => setFocusedField('name')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-hidden transition-all duration-300 ${
                         focusedField === 'name'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
                           : 'border-transparent hover:bg-slate-900/[0.06]'
@@ -449,6 +450,7 @@ export default function ContactPage() {
                     <input
                       type="email"
                       name="email"
+                      maxLength={254}
                       required
                       autoComplete="email"
                       inputMode="email"
@@ -456,7 +458,7 @@ export default function ContactPage() {
                       placeholder="Email"
                       onFocus={() => setFocusedField('email')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-hidden transition-all duration-300 ${
                         focusedField === 'email'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
                           : 'border-transparent hover:bg-slate-900/[0.06]'
@@ -475,7 +477,7 @@ export default function ContactPage() {
                       required
                       onFocus={() => setFocusedField('subject')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 focus:outline-none transition-all duration-300 appearance-none cursor-pointer ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 focus:outline-hidden transition-all duration-300 appearance-none cursor-pointer ${
                         focusedField === 'subject'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
                           : 'border-transparent hover:bg-slate-900/[0.06]'
@@ -504,12 +506,13 @@ export default function ContactPage() {
                     <textarea
                       ref={messageRef}
                       name="message"
+                      maxLength={5000}
                       required
                       rows={5}
                       placeholder="Message"
                       onFocus={() => setFocusedField('message')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all duration-300 resize-none ${
+                      className={`w-full px-5 py-4 rounded-[18px] bg-slate-900/[0.045] border-2 text-gray-900 placeholder:text-gray-400 focus:outline-hidden transition-all duration-300 resize-none ${
                         focusedField === 'message'
                           ? 'border-indigo-500 bg-white shadow-lg shadow-indigo-100/50'
                           : 'border-transparent hover:bg-slate-900/[0.06]'
@@ -527,7 +530,7 @@ export default function ContactPage() {
                         exit={{ opacity: 0, y: -6 }}
                         className="flex items-start gap-3 p-4 rounded-2xl bg-rose-50 border border-rose-100 text-sm text-rose-700"
                       >
-                        <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                         <p>
                           We couldn&apos;t send your message just now. Please try again, or email us at{' '}
                           <a href="mailto:contact@pixelscraft.online" className="font-medium underline">
@@ -592,7 +595,7 @@ export default function ContactPage() {
                 <details className="group">
                   <summary className="relative flex items-center justify-between p-5 md:p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                     <span className="font-medium text-gray-900">{faq.question}</span>
-                    <span className="ml-4 flex-shrink-0 w-8 h-8 rounded-full bg-white/80 ring-1 ring-indigo-100 flex items-center justify-center text-indigo-500 group-open:rotate-180 transition-transform duration-300">
+                    <span className="ml-4 shrink-0 w-8 h-8 rounded-full bg-white/80 ring-1 ring-indigo-100 flex items-center justify-center text-indigo-500 group-open:rotate-180 transition-transform duration-300">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -614,7 +617,7 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: easeOutExpo }}
         >
-          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 rounded-[32px] p-8 md:p-12 relative overflow-hidden ring-1 ring-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_30px_60px_-30px_rgba(79,70,229,0.7)]">
+          <div className="bg-linear-to-r from-indigo-500 via-purple-500 to-violet-500 rounded-[32px] p-8 md:p-12 relative overflow-hidden ring-1 ring-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_30px_60px_-30px_rgba(79,70,229,0.7)]">
             {/* Decorative elements */}
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-4 left-10 w-20 h-20 border border-white/30 rounded-full" />

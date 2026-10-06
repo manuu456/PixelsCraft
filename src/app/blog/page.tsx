@@ -147,8 +147,8 @@ export default function BlogPage() {
                     blurDataURL={BLUR_DATA_URL_DARK}
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold text-white bg-linear-to-r from-indigo-500 to-violet-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
                     Featured
                   </span>
                 </div>
@@ -196,7 +196,7 @@ export default function BlogPage() {
                     blurDataURL={BLUR_DATA_URL_DARK}
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
                 </div>
 
                 {/* Content */}

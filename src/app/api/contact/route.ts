@@ -1,59 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { ContactEmailUnavailableError, createContactHandler } from '../../../lib/contact'
 
-// Escape visitor input before it goes into the HTML email
-function escapeHtml(value: unknown) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
+export const POST = createContactHandler(async (email) => {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) throw new ContactEmailUnavailableError()
 
-export async function POST(request: NextRequest) {
-  try {
-    // Created per request so a missing key fails this request instead of the whole build
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const body = await request.json()
-    const { name, email, projectType, budget, message } = body
-
-    // Validate required fields
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Name, email, and message are required' },
-        { status: 400 }
-      )
-    }
-
-    // Send notification email to you
-    await resend.emails.send({
-      from: 'PixelsCraft Website <noreply@pixelscraft.online>',
-      to: 'contact@pixelscraft.online',
-      replyTo: email,
-      subject: `New Inquiry: ${projectType || 'General'} from ${name}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #4f46e5;">New Contact Form Submission</h2>
-          <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-            <p><strong>Project Type:</strong> ${escapeHtml(projectType || 'Not specified')}</p>
-            <p><strong>Budget:</strong> ${escapeHtml(budget || 'Not specified')}</p>
-          </div>
-          <h3>Message:</h3>
-          <p style="background: #f1f5f9; padding: 15px; border-radius: 8px; white-space: pre-wrap;">${escapeHtml(message)}</p>
-        </div>
-      `,
-    })
-
-    return NextResponse.json({ success: true, message: 'Message sent successfully' })
-  } catch (error: unknown) {
-    console.error('Email error:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json(
-      { error: 'Failed to send message', details: errorMessage },
-      { status: 500 }
-    )
-  }
-}
+  const resend = new Resend(apiKey)
+  const { error } = await resend.emails.send(email)
+  if (error) throw new Error('Email provider rejected the message')
+})

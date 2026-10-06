@@ -86,7 +86,7 @@ export function Footer() {
       {/* Soft glows + top hairline */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[40rem] h-[22rem] rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(99,102,241,0.22), transparent)' }} />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
       </div>
 
       {/* Newsletter Section */}
@@ -113,7 +113,7 @@ export function Footer() {
                   if (status === 'error') setStatus('idle')
                 }}
                 placeholder="Enter your email"
-                className="w-full pl-10 pr-4 py-3 rounded-full bg-white/[0.06] ring-1 ring-white/15 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/70 focus:bg-white/[0.09] transition-all text-base sm:text-sm"
+                className="w-full pl-10 pr-4 py-3 rounded-full bg-white/[0.06] ring-1 ring-white/15 text-white placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-400/70 focus:bg-white/[0.09] transition-all text-base sm:text-sm"
                 required
               />
             </div>
@@ -212,7 +212,7 @@ export function Footer() {
       <div className="relative h-32 sm:h-40 md:h-52 lg:h-64 overflow-hidden">
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pointer-events-none select-none">
           <span
-            className="text-[80px] sm:text-[120px] md:text-[180px] lg:text-[240px] xl:text-[300px] font-bold leading-none tracking-tight whitespace-nowrap bg-gradient-to-b from-white/[0.12] to-white/[0.01] bg-clip-text text-transparent"
+            className="text-[80px] sm:text-[120px] md:text-[180px] lg:text-[240px] xl:text-[300px] font-bold leading-none tracking-tight whitespace-nowrap bg-linear-to-b from-white/[0.12] to-white/[0.01] bg-clip-text text-transparent"
             style={{
               transform: 'translateY(25%)',
             }}
